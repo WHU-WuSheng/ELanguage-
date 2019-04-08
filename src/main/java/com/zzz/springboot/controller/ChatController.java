@@ -41,15 +41,10 @@ public class ChatController {
 	public String show(String username, ModelMap modelMap, HttpSession session) throws Exception {
 		User user = (User) session.getAttribute("user");
 		List<String> contacts = this.iChatService.selectContact(user.getUsername());
-		/*List<Chat>[] chats = new ArrayList[contacts.size()];
-		for (int i = 0; i < contacts.size(); i++) {
-			chats[i] = this.iChatService.select(user.getUsername(), username);
-		}*/
 		if (!contacts.contains(username) && this.iUserService.getAllUsername().contains(username)) {
 			modelMap.put("newContact", username);
 		}
 		modelMap.put("contacts", contacts);
-		/*modelMap.put("chats", chats);*/
 		return "chat";
 	}
 
