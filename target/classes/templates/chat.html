@@ -6,6 +6,16 @@
 </head>
 <body>
 	<div th:replace="head::head"></div>
-	
+	<div>
+		<div>
+			<div th:if="${newContact!=null}" th:remove="tag">
+				<div th:text="${newContact}"></div>
+			</div>
+			<div th:each="contact:${contacts}">
+				<div th:text="${contact}"></div>
+			</div>
+		</div>
+		<div></div>
+	</div>
 </body>
 </html>

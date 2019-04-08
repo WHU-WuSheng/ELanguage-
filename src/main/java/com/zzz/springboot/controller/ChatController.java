@@ -41,6 +41,7 @@ public class ChatController {
 		if (!contacts.contains(username) && !"".equals(username)) {
 			modelMap.put("newContact", username);
 		}
+		modelMap.put("contacts", contacts);
 		modelMap.put("chats", chats);
 		return "chat";
 	}
