@@ -28,4 +28,5 @@ public interface IUserService {
 
 	List<User> selectUserByCredit(int credit) throws Exception;
 
+	List<String> getAllUsername() throws Exception;
 }

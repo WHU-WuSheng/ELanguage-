@@ -12,6 +12,9 @@ import com.zzz.springboot.entity.User;
 
 @Mapper
 public interface IUserMapper {
+	@Select("select username from user")
+	List<String> getAllUsername() throws Exception;
+
 	@Select("select * from user")
 	List<User> getAllUser() throws Exception;
 

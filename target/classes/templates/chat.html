@@ -4,18 +4,177 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>聊天</title>
 </head>
+<style type="text/css">
+.talk_con {
+	width: 600px;
+	height: 500px;
+	border: 1px solid #666;
+	margin: 50px auto 0;
+	background: #f9f9f9;
+}
+
+.talk_show {
+	width: 580px;
+	height: 420px;
+	border: 1px solid #666;
+	background: #fff;
+	margin: 10px auto 0;
+	overflow: auto;
+}
+
+.talk_input {
+	width: 580px;
+	margin: 10px auto 0;
+}
+
+.whotalk {
+	width: 80px;
+	height: 30px;
+	float: left;
+	outline: none;
+}
+
+.talk_word {
+	width: 420px;
+	height: 26px;
+	padding: 0px;
+	float: left;
+	margin-left: 10px;
+	outline: none;
+	text-indent: 10px;
+}
+
+.talk_sub {
+	width: 56px;
+	height: 30px;
+	float: left;
+	margin-left: 10px;
+}
+
+.atalk {
+	margin: 10px;
+}
+
+.atalk span {
+	display: inline-block;
+	background: #0181cc;
+	border-radius: 10px;
+	color: #fff;
+	padding: 5px 10px;
+}
+
+.btalk {
+	margin: 10px;
+	text-align: right;
+}
+
+.btalk span {
+	display: inline-block;
+	background: #ef8201;
+	border-radius: 10px;
+	color: #fff;
+	padding: 5px 10px;
+}
+</style>
 <body>
 	<div th:replace="head::head"></div>
+	<input type="hidden" id="_onclick">
 	<div>
 		<div>
 			<div th:if="${newContact!=null}" th:remove="tag">
 				<div th:text="${newContact}"></div>
 			</div>
-			<div th:each="contact:${contacts}">
-				<div th:text="${contact}"></div>
+			<div th:each="contact:${contacts}" th:remove="tag">
+				<div th:text="${contact}" th:onclick="|getChat('${contact}');|"></div>
 			</div>
 		</div>
-		<div></div>
+		<div class="talk_con">
+			<div class="talk_show" id="words"></div>
+			<div class="talk_input">
+				<!-- <select class="whotalk" id="who">
+					<option value="0">A说：</option>
+					<option value="1">B说：</option>
+				</select> -->
+				<input type="text" class="talk_word" id="talkwords"> <input type="button" value="发送"
+					class="talk_sub" id="talksub">
+			</div>
+		</div>
 	</div>
 </body>
+<script type="text/javascript" th:inline="javascript">
+	
+	window.onload = function() {
+		$("#talksub").click(function() {
+			//定义空字符串
+			var str = "";
+			if ($("#talkwords").val() == "") {
+				// 消息为空时弹窗
+				alert("消息不能为空");
+				return;
+			}
+			webSocket.send(JSON.stringify({
+				sender : [[${session.user.username}]],
+				receiver : $("#_onclick").val(),
+				content : $("#talkwords").val()
+			}));
+			$("#talkwords").val(null);
+			/* str = '<div class="btalk"><span>' + $("#talkwords").val()
+						+ '</span></div>';
+			$("#words").html($("#words").html()+str); */
+		})
+	}
+	/**
+	 * 当服务端发来消息：1.广播消息 2.更新在线人数
+	 */
+	webSocket.onmessage = function(event) {
+		console.log('WebSocket收到消息：%c' + event.data, 'color:green');
+		//获取服务端消息
+		var chat = JSON.parse(event.data) || {};
+		var str;
+		if(chat.sender==[[${session.user.username}]]&&chat.receiver==$("#_onclick").val()){
+			str = '<div class="btalk"><span>' + chat.content
+			+ '</span></div>';
+			$("#words").html($("#words").html()+str);
+		}
+		else if(chat.receiver==[[${session.user.username}]]&&chat.sender==$("#_onclick").val()){
+			str = '<div class="atalk"><span>' + chat.content
+			+ '</span></div>';
+			$("#words").html($("#words").html()+str);
+		}
+		
+		/* //防止刷屏
+		var $cards = $messageContainer.children('.mdui-card:visible')
+				.toArray();
+		if ($cards.length > 5) {
+			$cards.forEach(function(item, index) {
+				index < $cards.length - 5 && $(item).slideUp('fast');
+			});
+		} */
+	};
+	function getChat(username) {
+		$("#_onclick").val(username);
+		$.ajax({
+			type : 'post',
+			url : '/chat/get',
+			data : {
+				username : username
+			},
+			success : function(data) {
+				$("#words").html(null);
+				for ( var chat of data) {
+					var str = "";
+					if(chat.sender==[[${session.user.username}]]){
+						str = '<div class="btalk"><span>' + chat.content
+						+ '</span></div>';
+					}
+					else{
+						str = '<div class="atalk"><span>' + chat.content
+						+ '</span></div>';
+					}
+					$("#words").html($("#words").html()+str);
+				}
+			}
+		});
+	}
+</script>
 </html>

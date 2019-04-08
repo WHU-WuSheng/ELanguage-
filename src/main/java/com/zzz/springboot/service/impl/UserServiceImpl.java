@@ -68,4 +68,10 @@ public class UserServiceImpl implements IUserService {
 		return this.iUserMapper.selectUserByUsername(username);
 	}
 
+	@Override
+	public List<String> getAllUsername() throws Exception {
+		// TODO 自动生成的方法存根
+		return this.iUserMapper.getAllUsername();
+	}
+
 }
