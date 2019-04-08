@@ -75,7 +75,7 @@
 			 * WebSocket客户端 PS：URL开头表示WebSocket协议 中间是域名端口 结尾是服务端映射地址
 			 */
 			/*[[${webSocketUrl}]]*/
-			var webSocket = new WebSocket('ws://localhost:80/chat');
+			var webSocket = new WebSocket('ws://localhost:80/chat/'+[[${username}]]);
 			/**
 			 * 当服务端打开连接
 			 */
@@ -134,7 +134,7 @@
 			if ($message.val()) {
 				webSocket.send(JSON.stringify({
 					sender : $('#username').text(),
-					receiver : $('#username').text(),
+					receiver : 'zzz',
 					content : $message.val()
 				}));
 				$message.val(null);

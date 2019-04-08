@@ -10,6 +10,7 @@ import javax.websocket.OnError;
 import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
 import javax.websocket.Session;
+import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 
 import org.springframework.stereotype.Component;
@@ -25,7 +26,7 @@ import com.zzz.springboot.entity.Chat;
  */
 
 @Component
-@ServerEndpoint("/chat")
+@ServerEndpoint("/chat/{username}")
 public class WebSocketChatServer {
 
 	/**
@@ -37,8 +38,8 @@ public class WebSocketChatServer {
 	 * 当客户端打开连接：1.添加会话对象 2.更新在线人数
 	 */
 	@OnOpen
-	public void onOpen(Session session) {
-		onlineSessions.put(session.getId(), session);
+	public void onOpen(@PathParam("username") String username, Session session) {
+		onlineSessions.put(username, session);
 		//sendMessageToAll(Chat.jsonStr("", "", new Timestamp(0), "", onlineSessions.size()));
 	}
 
@@ -50,9 +51,11 @@ public class WebSocketChatServer {
 	@OnMessage
 	public void onMessage(Session session, String jsonStr) {
 		Chat chat = JSON.parseObject(jsonStr, Chat.class);
-		sendMessageToAll(Chat.jsonStr(chat.getSender(), chat.getReceiver(), new Timestamp(System.currentTimeMillis()),
-				chat.getContent(),
-				onlineSessions.size()));
+		sendMessageToOne(chat.getSender(), Chat.jsonStr(chat.getSender(), chat.getReceiver(),
+				new Timestamp(System.currentTimeMillis()), chat.getContent(), onlineSessions.size()));
+		if (onlineSessions.get(chat.getReceiver()) != null)
+			sendMessageToOne(chat.getReceiver(), Chat.jsonStr(chat.getSender(), chat.getReceiver(),
+					new Timestamp(System.currentTimeMillis()), chat.getContent(), onlineSessions.size()));
 	}
 
 	/**
@@ -60,7 +63,11 @@ public class WebSocketChatServer {
 	 */
 	@OnClose
 	public void onClose(Session session) {
-		onlineSessions.remove(session.getId());
+		onlineSessions.forEach((id, item) -> {
+			if (item == session) {
+				onlineSessions.remove(id);
+			}
+		});
 		//sendMessageToAll(Message.jsonStr(Message.QUIT, "", "", onlineSessions.size()));
 	}
 
@@ -85,4 +92,15 @@ public class WebSocketChatServer {
 		});
 	}
 
+	private static void sendMessageToOne(String username, String chat) {
+		onlineSessions.forEach((id, session) -> {
+			if (id.equals(username)) {
+				try {
+					session.getBasicRemote().sendText(chat);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
 }
