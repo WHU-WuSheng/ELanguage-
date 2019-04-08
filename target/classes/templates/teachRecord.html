@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>教学记录</title>
+</head>
+<body>
+	<div th:replace="head::head"></div>
+	<div th:each="recordType,iterStat:${records }" th:remove="tag">
+		<div th:switch="${iterStat.index}" th:remove="tag">
+			<div th:case="0">0号记录</div>
+			<div th:case="1">1号记录</div>
+			<div th:case="2">2号记录</div>
+			<div th:case="3">3号记录</div>
+		</div>
+		<div th:switch="${recordType.size()==0}" th:remove="tag">
+			<div th:case="true">没有记录</div>
+			<div th:case="false" th:remove="tag">
+				<table border="1">
+					<tr>
+						<th>学生</th>
+						<th>语言</th>
+						<th>申请时间</th>
+						<div th:if="${iterStat.index==2 || iterStat.index==3}" th:remove="tag">
+							<th>开始时间</th>
+						</div>
+						<div th:if="${iterStat.index==3}" th:remove="tag">
+							<th>结束时间</th>
+							<th>评论</th>
+							<th>星星</th>
+						</div>
+						<div th:if="${iterStat.index!=0}" th:remove="tag">
+							<th>收费</th>
+						</div>
+					</tr>
+					<div th:each="record:${recordType }" th:remove="tag">
+						<tr>
+							<td th:text="${record.student }"></td>
+							<td th:text="${record.language }"></td>
+							<td th:text="${#dates.format(record.applyTime,'yyyy-MM-dd HH：mm：ss')}"></td>
+							<div th:if="${iterStat.index==2 || iterStat.index==3}" th:remove="tag">
+								<td th:text="${#dates.format(record.startTime,'yyyy-MM-dd HH：mm：ss')}"></td>
+							</div>
+							<div th:if="${iterStat.index==3}" th:remove="tag">
+								<td th:text="${#dates.format(record.endTime,'yyyy-MM-dd HH：mm：ss')}"></td>
+								<td th:text="${record.remark }"></td>
+								<td th:text="${record.star }"></td>
+							</div>
+							<div th:if="${iterStat.index!=0}" th:remove="tag">
+								<td th:text="${record.money }"></td>
+							</div>
+						</tr>
+					</div>
+				</table>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

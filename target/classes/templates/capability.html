@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>技能</title>
+<script type="text/javascript">
+	function deleteOne(id) {
+		$("#" + id).submit();
+	}
+	function deleteAll() {
+		$("#_deleteAll").submit();
+	}
+</script>
+</head>
+<body>
+	<div th:replace="head::head"></div>
+	<div th:switch="${capabilities.size()==0 }" th:remove="tag">
+		<div th:case="true">当前用户还没有发布技能</div>
+		<div th:case="false" th:remove="tag">
+			<div th:switch="${capabilities[0].username==session.user?.username}" th:remove="tag">
+				<div th:case="true" th:remove="tag">
+					<table border="1">
+						<tr>
+							<th>语言</th>
+							<th>等级</th>
+							<th></th>
+						</tr>
+						<div th:each="capability:${capabilities }" th:remove="tag">
+							<form th:id="|${capability.username}${capability.language}|"
+								th:action="@{/capability/deleteOne/{username}/{language}(username=${capability.username},language=${capability.language})}"
+								method="post"></form>
+							<tr>
+								<td th:text="${capability.language }"></td>
+								<td th:text="${capability.level }"></td>
+								<td>
+									<a href="javascript:;"
+										th:onclick="|deleteOne('${capability.username}${capability.language}');|">删除</a>
+								</td>
+							</tr>
+						</div>
+						<form id="_deleteAll" th:action="@{/capability/deleteAll/{username}(username=${session.user?.username})}"
+							method="post"></form>
+						<tr>
+							<td>
+								<a href="javascript:;" onclick="deleteAll();">删除全部技能</a>
+							</td>
+							<td></td>
+							<td></td>
+						</tr>
+					</table>
+				</div>
+				<div th:case="false" th:remove="tag">
+					<table border="1">
+						<tr>
+							<th>语言</th>
+							<th>等级</th>
+						</tr>
+						<div th:each="capability:${capabilities }" th:remove="tag">
+							<tr>
+								<td th:text="${capability.language }"></td>
+								<td th:text="${capability.level }"></td>
+							</tr>
+						</div>
+					</table>
+					<a href="javascript:;" onclick=""></a>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

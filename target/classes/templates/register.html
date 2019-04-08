@@ -1,0 +1,49 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>注册</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+	<form action="/user/register" method="post" enctype="multipart/form-data">
+		头像：
+		<input type="file" name="pic" accept="image/jpeg,image/jpg,image/png">
+		<br>
+		用户名：
+		<input type="text" name="username">
+		<br>
+		密码：
+		<input type="password" name="password">
+		<br>
+		确认密码：
+		<input type="password" name="confirmPassword">
+		<br>
+		手机号：
+		<input type="text" name="phone">
+		<br>
+		手机验证码：
+		<input type="text" name="phoneCode" />
+		<br>
+		邮箱号：
+		<input type="text" name="email">
+		<br>
+		邮箱验证码：
+		<input type="text" name="emailCode">
+		<br>
+		性别：
+		<input type="radio" name="sex" value="男">
+		男
+		<input type="radio" name="sex" value="女">
+		女
+		<br>
+		年龄：
+		<input type="text" name="age">
+		<br>
+		个人简介：
+		<input type="text" name="profile">
+		<br>
+		<input type="submit" value="注册">
+		<br>
+	</form>
+</body>
+</html>

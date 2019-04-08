@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>拦截提示</title>
+<script type="text/javascript" src="/js/jquery-3.1.1.min.js"></script>
+<script type="text/javascript">
+	function login() {
+		$("form").submit();
+	}
+	setInterval(jump, 1000);
+	var sec = 5;
+	function jump() {
+		sec--;
+		if (sec > 0) {
+			$("#remainSeconds").html(sec);
+		} else {
+			login();
+		}
+	}
+</script>
+</head>
+<body>
+	<h1>当前操作需要登录</h1>
+	<span id="remainSeconds" style="color: red;">5</span>秒后跳转登录界面
+	<br>
+	<form action="/login" method="get">
+		<input type="hidden" name="url" th:value="${url }">
+	</form>
+	<a href="javascript:;" onclick="login();">立即跳转</a>
+</body>
+</html>

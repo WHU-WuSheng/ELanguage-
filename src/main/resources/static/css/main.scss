@@ -1,0 +1,204 @@
+* {
+  padding: 0;
+  margin: 0;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  text-decoration: none;
+}
+.header{
+  $height:70px;
+  $padding:10px;
+  width:100%;
+  height: $height;
+  display: flex;
+  color: #1a2a3a;
+  position: relative;
+  .nav-bar{
+    display: flex;
+    flex: 1 1 500px;
+    margin-left: 30px;
+    font-size: 0.9em;
+    nav{
+      width: 100px;
+      //margin-right:15px;
+      line-height: $height;
+      text-align: center;
+      &:hover{
+        border-bottom: 3px solid #ffcc66;
+        color: #ffcc66;
+      }
+      &:nth-child(1){
+        background-color: #ffcc66;
+        color: #ffffff;
+      }
+    }
+
+
+  }
+   &-logo {
+    padding: $padding;
+    //line-height: $height - $padding*2;
+    img {
+      margin-right: 100px;
+      display:none;
+    }
+  }
+  .flex-right{
+  display: flex;
+  justify-content: flex-end;
+  padding: $padding;
+  line-height: $height - $padding*2;
+  flex: 1 1 400px;
+
+  .header-list{
+    font-size: 0.9em;
+    margin-right: 20px;
+    span a{
+      margin: 0 10px;
+      color: #666;
+      &:hover{
+        color: #000000;
+      }
+    }
+    i{
+      margin:0 10px 0 25px;
+    }
+  }
+
+}
+  .box-shadow{
+    position: absolute;
+    left: 0;
+    bottom: -1px;
+    width: 100%;
+    height: 2px;
+    border-top: 1px solid #d6d6d6;
+    background-color: rgba(0,0,0,.06);
+    overflow: hidden;
+    z-index: -1;
+  }
+
+}
+.banner{
+  $banner-height:421px;
+  height: $banner-height;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  .gradient{
+    position: absolute;
+    width: 40%;
+    height: $banner-height;
+    z-index: 2;
+    //background: radial-gradient(100% 90%,rgba(0,0,0,0) 25%,rgba(214,214,214,1));
+    //background: radial-gradient(1000px 400px at 550px center,rgba(0,0,0,0) ,rgba(214,214,214,1));
+    //opacity: 1;
+    background: linear-gradient(to left,transparent 20%,rgba(0,0,0,0.5) 100%);
+  }
+   &-img{
+     height: $banner-height;
+     width: 100%;
+     position: absolute;
+     display: block;
+  }
+  .bg1{
+    background: url(../img/1.jpeg) no-repeat center center;
+    z-index: 3;
+  }
+  .bg2{
+    background: url(../img/2.jpeg) no-repeat center center;
+  }
+  .bg3{
+    background: url(../img/3.jpeg) no-repeat center center;
+  }
+  .bg4{
+    background: url(../img/4.jpeg) no-repeat center center;
+  }
+  .bg5{
+    background: url(../img/5.jpeg) no-repeat center center;
+  }
+
+  .change-lines{
+    position: absolute;
+    bottom: 40px;
+    left: 100px;
+    z-index: 7;
+    .change-line{
+      display: inline-block;
+      width: 50px;
+      height: 2px;
+      margin-right: 3px;
+      border-radius: 2px;
+      background-color: rgba(255,255,255,0.2);
+
+    }
+    .change-line-on{
+      .progress{
+        width: 50px;
+        height: 2px;
+        animation: progress-change 8s linear infinite;
+        background-color: #ffffff;
+
+      }
+    }
+  }
+  .arrow{
+    $arrow-height:80px;
+    position: absolute;
+    width: 30px;
+    height: $arrow-height;
+    top:$banner-height/2 - $arrow-height/2;
+    z-index: 8;
+    cursor: pointer;
+
+    &-left{
+      left: 20px;
+      background: url("../img/arrow.png") no-repeat center center;
+      background-size: 20px 20px;
+      //background-color: rgba(214,214,214,0.2);
+      transform: rotate(180deg);
+      z-index: 8;
+
+    }
+    &-right{
+      right:20px;
+      background: url("../img/arrow.png") no-repeat center center;
+      background-size: 20px 20px;
+      //background-color: rgba(214,214,214,0.2);
+      z-index: 8;
+
+    }
+  }
+
+}
+.recommend{
+  .recommend-banner{
+    .rec-title{
+      width: 100%;
+      height: 70px;
+      margin-top: 60px;
+      font-size: 28px;
+      font-weight: 700;
+      font-stretch: expanded;
+      line-height: 70px;
+      text-align: center;
+      color: #444444;
+    }
+    .rec-bottom-line{
+      width: 80px;
+      height: 3px;
+      background-color: #000;
+      margin: 0 auto;
+    }
+  }
+}
+@keyframes progress-change {
+  0%{
+    width: 0;
+  }
+  100%{
+    width: 100%;
+  }
+  
+}

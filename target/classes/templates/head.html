@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:fragment="head">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>head</title>
+<link rel="stylesheet" type="text/css" href="/css/main.css">
+<link rel="stylesheet" href="/css/font-awesome.min.css">
+<script src="/js/jquery-3.3.1.min.js"></script>
+<script type="text/javascript">
+	function show() {
+		$("#show").submit();
+	}
+	function logout() {
+		$("#logout").submit();
+	}
+</script>
+</head>
+<body>
+	<div class="header">
+		<div class="nav-bar flex-left">
+			<nav>
+				<a href="/">首页</a>
+			</nav>
+			<nav>选项</nav>
+			<nav>选项</nav>
+			<nav>选项</nav>
+			<nav>选项</nav>
+		</div>
+		<div class="header-logo">
+			<img src="http://placekitten.com/200/40" alt="logo">
+		</div>
+
+		<div class="flex-right">
+			<!--<div class="header-search">-->
+			<!--<input type="text" placeholder="查询课程">-->
+			<!--<i class="fa fa-search" aria-hidden="true"></i>-->
+			<!--</div>-->
+			<div class="header-list">
+				<div th:switch="${session.user==null }" th:remove="tag">
+					<div th:case="true" th:remove="tag">
+						<span>|</span> <span><a
+							th:href="@{/login?url={url}(url=${#httpServletRequest.requestURI})}">登录</a></span> <span></span> <span><a
+							href="/register">注册</a></span> <span>|</span>
+					</div>
+					<div th:case="false" th:remove="tag">
+						<form id="show" th:action="@{/user/show/{username}(username=${session.user.username})}"
+							method="post"></form>
+						<form id="logout" action="/user/logout" method="post"></form>
+						<span>|</span> <span><a href="javascript:;" onclick="show();"
+							th:text="|尊敬的${session.user.username }|"> </a></span> <span></span> <span><a
+							href="javascript:;" onclick="logout();">退出</a></span> <span>|</span>
+					</div>
+				</div>
+				<!-- <i class="fa fa-shopping-cart" aria-hidden="true"></i>购物车 -->
+			</div>
+		</div>
+		<div class="box-shadow"></div>
+	</div>
+</body>
+</html>
