@@ -38,7 +38,7 @@ public class ChatController {
 		for (int i = 0; i < contacts.size(); i++) {
 			chats[i] = this.iChatService.select(user.getUsername(), username);
 		}
-		if (!contacts.contains(username)) {
+		if (!contacts.contains(username) && !"".equals(username)) {
 			modelMap.put("newContact", username);
 		}
 		modelMap.put("chats", chats);
