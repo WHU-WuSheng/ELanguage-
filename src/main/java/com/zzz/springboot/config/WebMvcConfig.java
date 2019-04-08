@@ -24,7 +24,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
 		// springboot默认有/error
 		registry.addInterceptor(this.loginInterceptor).addPathPatterns("/**").excludePathPatterns(/*"/static/**",*/ "/",
 				"/login", "/register", "/download/*", "/loginInterceptor", "/user/login", "/user/register",
-				"/user/logout", "/user/show/*", "/capability/show/*", "/error", "/chat2", "/login2");
+				"/user/logout", "/user/show/*", "/capability/show/*", "/error", "/chat2", "/login2","/chat/test");
 		WebMvcConfigurer.super.addInterceptors(registry);
 	}
 

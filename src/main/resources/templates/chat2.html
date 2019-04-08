@@ -135,9 +135,7 @@
 				webSocket.send(JSON.stringify({
 					sender : $('#username').text(),
 					receiver : $('#username').text(),
-					time : new Date(),
-					content : $message.val(),
-					onlineCount : 1
+					content : $message.val()
 				}));
 				$message.val(null);
 			}

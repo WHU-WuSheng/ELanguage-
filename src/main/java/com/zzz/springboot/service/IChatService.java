@@ -16,5 +16,7 @@ import com.zzz.springboot.entity.Chat;
 public interface IChatService {
 	List<Chat> select(String sender, String receiver) throws Exception;
 
+	List<String> selectContact(String username) throws Exception;
+
 	void add(Chat chat) throws Exception;
 }

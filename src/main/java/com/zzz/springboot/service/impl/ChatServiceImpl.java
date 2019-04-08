@@ -33,4 +33,10 @@ public class ChatServiceImpl implements IChatService {
 		this.iChatMapper.insertChat(chat);
 	}
 
+	@Override
+	public List<String> selectContact(String username) throws Exception {
+		// TODO 自动生成的方法存根
+		return this.iChatMapper.selectContact(username);
+	}
+
 }

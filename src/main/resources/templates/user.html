@@ -13,6 +13,9 @@
 	function showTeach() {
 		$("#showTeach").submit();
 	}
+	function showChat() {
+		$("#showChat").submit();
+	}
 </script>
 </head>
 <body>
@@ -68,6 +71,10 @@
 						onclick="showStudy();">查看我的学习记录</a> <a href="javascript:;" onclick="showTeach();">查看我的教学记录</a>
 				</div>
 				<div th:case="false" th:remove="tag">
+					<form id="showChat"
+						th:action="/chat/show/{username}(username=${selectUser?.username})"
+						method="post"></form>
+					<a href="javascript:;" onclick="showChat();" th:text="|与${selectUser?.sex=='男'?'他':'她'}聊天|"></a>
 					<a href="javascript:;" onclick="showCapability();"
 						th:text="|查看${selectUser?.sex=='男'?'他':'她'}发布的技能|"></a>
 				</div>

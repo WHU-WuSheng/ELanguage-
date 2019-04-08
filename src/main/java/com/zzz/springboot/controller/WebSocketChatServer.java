@@ -50,7 +50,8 @@ public class WebSocketChatServer {
 	@OnMessage
 	public void onMessage(Session session, String jsonStr) {
 		Chat chat = JSON.parseObject(jsonStr, Chat.class);
-		sendMessageToAll(Chat.jsonStr(chat.getSender(), chat.getReceiver(), chat.getTime(), chat.getContent(),
+		sendMessageToAll(Chat.jsonStr(chat.getSender(), chat.getReceiver(), new Timestamp(System.currentTimeMillis()),
+				chat.getContent(),
 				onlineSessions.size()));
 	}
 
