@@ -36,3 +36,9 @@ spring:
       mode: LEGACYHTML5
       encoding: UTF-8
       cache: false
+   mail:
+      host: smtp.qq.com
+      username: 454050427
+      password: 18572810802zzz
+      properties:
+         from: 454050427@qq.com
