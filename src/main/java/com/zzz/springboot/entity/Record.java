@@ -3,7 +3,9 @@ package com.zzz.springboot.entity;
 import java.sql.Timestamp;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * <p>Title: Record</p>
@@ -13,7 +15,9 @@ import lombok.Data;
  * @date 2019年4月2日 下午10:50:13
  */
 @Data
+@NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Record {
 	private String teacher;
 	private String student;

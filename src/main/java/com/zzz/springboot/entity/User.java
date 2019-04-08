@@ -1,7 +1,9 @@
 package com.zzz.springboot.entity;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * <p>Title: User</p>
@@ -11,7 +13,9 @@ import lombok.Data;
  * @date 2019年4月2日 下午10:50:08
  */
 @Data
+@NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class User {
 	private String username;
 	private String password;
