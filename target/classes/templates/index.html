@@ -116,12 +116,12 @@
 			</tr>
 		</div>
 	</table>
-	<!-- 文件下载 -->
-	<!-- <div th:each="user:${users}" th:remove="tag">
+	<div th:each="user:${users}" th:remove="tag">
 		<form th:id="${user.username}" th:action="@{/user/show/{username}(username=${user.username})}"
 			method="post"></form>
 	</div>
-	<form id="_download" method="post">
+	<!-- 文件下载 -->
+	<!-- <form id="_download" method="post">
 		<input id="_filename" type="text" name="filename"> <input type="submit" value="下载"
 			onclick="download();">
 	</form> -->
