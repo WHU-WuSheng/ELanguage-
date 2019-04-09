@@ -7,11 +7,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.zzz.springboot.entity.Mail;
 
+@Service
 public class MailService {
 	private Logger logger = LoggerFactory.getLogger(getClass());//提供日志类
 	@Autowired
@@ -26,7 +28,7 @@ public class MailService {
 			sendMimeMail(mail); //2.发送邮件
 			return saveMail(mail); //3.保存邮件
 		} catch (Exception e) {
-			//logger.error("发送邮件失败:", e);//打印错误信息
+			logger.error("发送邮件失败:", e);//打印错误信息
 			mail.setStatus("fail");
 			mail.setError(e.getMessage());
 			return mail;
