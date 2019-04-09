@@ -23,17 +23,6 @@ public class CustomController {
 	@Autowired
 	private IUserService iUserService;
 
-	@RequestMapping("/chat2")
-	public String chat(Model model, String username) throws Exception {
-		model.addAttribute("username", username);
-		return "chat2";
-	}
-
-	@RequestMapping("/login2")
-	public String login2() throws Exception {
-		return "login2";
-	}
-
 	@RequestMapping("/")
 	public String index(Model model) throws Exception {
 		model.addAttribute("users", this.iUserService.selectUserByCredit(0));

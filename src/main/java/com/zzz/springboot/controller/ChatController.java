@@ -31,18 +31,16 @@ public class ChatController {
 	@Autowired
 	private IUserService iUserService;
 
-	@RequestMapping("test")
-	public String test() throws Exception {
-		System.out.println(this.iChatService.selectContact("2016302580092"));
-		return "login";
-	}
-
 	@RequestMapping("show")
 	public String show(String username, ModelMap modelMap, HttpSession session) throws Exception {
 		User user = (User) session.getAttribute("user");
 		List<String> contacts = this.iChatService.selectContact(user.getUsername());
-		if (!contacts.contains(username) && this.iUserService.getAllUsername().contains(username)) {
+		if (!contacts.contains(username) && this.iUserService.getAllUsername().contains(username)
+				&& !user.getUsername().equals(username)) {
 			modelMap.put("newContact", username);
+		} else if (contacts.contains(username)) {
+			modelMap.put("newContact", username);
+			contacts.remove(username);
 		}
 		modelMap.put("contacts", contacts);
 		return "chat";

@@ -80,21 +80,23 @@
 	<div th:replace="head::head"></div>
 	<input type="hidden" id="_onclick">
 	<div>
-		<div>
+		<div class="talk_contacts">
 			<div th:if="${newContact!=null}" th:remove="tag">
-				<div th:text="${newContact}"></div>
+				<div th:id="${newContact}">
+					<div th:text="${newContact}" th:onclick="|getChat('${newContact}');|" class="talk_contact"></div>
+					<div class="talk_hint" style="color: red;"></div>
+				</div>
 			</div>
 			<div th:each="contact:${contacts}" th:remove="tag">
-				<div th:text="${contact}" th:onclick="|getChat('${contact}');|"></div>
+				<div th:id="${contact}">
+					<div th:text="${contact}" th:onclick="|getChat('${contact}');|" class="talk_contact"></div>
+					<div class="talk_hint" style="color: red;"></div>
+				</div>
 			</div>
 		</div>
 		<div class="talk_con">
 			<div class="talk_show" id="words"></div>
 			<div class="talk_input">
-				<!-- <select class="whotalk" id="who">
-					<option value="0">A说：</option>
-					<option value="1">B说：</option>
-				</select> -->
 				<input type="text" class="talk_word" id="talkwords"> <input type="button" value="发送"
 					class="talk_sub" id="talksub">
 			</div>
@@ -118,10 +120,34 @@
 				content : $("#talkwords").val()
 			}));
 			$("#talkwords").val(null);
-			/* str = '<div class="btalk"><span>' + $("#talkwords").val()
-						+ '</span></div>';
-			$("#words").html($("#words").html()+str); */
 		})
+	}
+	var contacts=[[${contacts}]];
+	if($(".talk_contact")!=null){
+		$(".talk_contact").first().css("color","red");
+		$("#_onclick").val($(".talk_contact").first().parent().attr('id'));
+		$.ajax({
+			type : 'post',
+			url : '/chat/get',
+			data : {
+				username : $("#_onclick").val()
+			},
+			success : function(data) {
+				$("#words").html(null);
+				for ( var chat of data) {
+					var str = "";
+					if(chat.sender==[[${session.user.username}]]){
+						str = '<div class="btalk"><span>' + chat.content
+						+ '</span></div>';
+					}
+					else{
+						str = '<div class="atalk"><span>' + chat.content
+						+ '</span></div>';
+					}
+					$("#words").html($("#words").html()+str);
+				}
+			}
+		});
 	}
 	/**
 	 * 当服务端发来消息：1.广播消息 2.更新在线人数
@@ -141,7 +167,20 @@
 			+ '</span></div>';
 			$("#words").html($("#words").html()+str);
 		}
-		
+		else{
+			if(contacts.indexOf(chat.sender)>-1){
+				if($("#"+chat.sender).children(".talk_hint").text()=="")
+					$("#"+chat.sender).children(".talk_hint").text(1);
+				else{
+					$("#"+chat.sender).children(".talk_hint").text(parseInt($("#"+chat.sender).children(".talk_hint").text())+1);
+				}
+			}
+			else{
+				str='<div id="'+chat.sender+'"><div onclick="getChat(\''+chat.sender+'\');" class="talk_contact">'+chat.sender+'</div><div class="talk_hint" style="color: red;">1</div></div>';
+				$(".talk_contacts").html(str+$(".talk_contacts").html());
+				contacts.push(chat.sender);
+			}
+		}
 		/* //防止刷屏
 		var $cards = $messageContainer.children('.mdui-card:visible')
 				.toArray();
@@ -152,6 +191,9 @@
 		} */
 	};
 	function getChat(username) {
+		$("#"+username).children(".talk_hint").text("");
+		$("#"+$("#_onclick").val()).children(".talk_contact").css("color","black");
+		$("#"+username).children(".talk_contact").css("color","red");
 		$("#_onclick").val(username);
 		$.ajax({
 			type : 'post',
