@@ -43,7 +43,8 @@
 					<div th:case="true" th:remove="tag">
 						<span>|</span> <span><a
 							th:href="@{/login?url={url}(url=${#httpServletRequest.requestURI})}">登录</a></span> <span></span> <span><a
-							href="/register">注册</a></span> <!-- <span>|</span> -->
+							href="/register">注册</a></span>
+						<!-- <span>|</span> -->
 					</div>
 					<div th:case="false" th:remove="tag">
 						<form id="show" th:action="@{/user/show/{username}(username=${session.user.username})}"
@@ -51,7 +52,8 @@
 						<form id="logout" action="/user/logout" method="post"></form>
 						<span>|</span> <span><a href="javascript:;" onclick="show();"
 							th:text="|${session.user.username }|"> </a></span> <span></span> <span><a href="javascript:;"
-							onclick="logout();">退出</a></span> <!-- <span>|</span> -->
+							onclick="logout();">退出</a></span>
+						<!-- <span>|</span> -->
 					</div>
 				</div>
 				<span></span> <span><a href="/chat/show">聊天</a></span> <span>|</span>
@@ -69,7 +71,7 @@
 		 */
 		 var webSocket;
 		 if([[${session.user!=null}]]){
-			 webSocket = new WebSocket('ws://localhost:80/chat/'+[[${session.user?.username}]]);
+			 webSocket = new WebSocket('ws://192.168.1.101:80/chat/'+[[${session.user?.username}]]);
 			 /**
 				 * 当服务端打开连接
 				 */
@@ -89,91 +91,6 @@
 					console.log('WebSocket发生异常');
 				};
 		 }
-		 
-		function getWebSocket() {
-			/**
-			 * WebSocket客户端 PS：URL开头表示WebSocket协议 中间是域名端口 结尾是服务端映射地址
-			 */
-			/*[[${webSocketUrl}]]*/
-			var webSocket = new WebSocket('ws://localhost:80/chat/'+[[${session.user?.username}]]);
-			/**
-			 * 当服务端打开连接
-			 */
-			webSocket.onopen = function(event) {
-				console.log('WebSocket打开连接');
-			};
-			/**
-			 * 当服务端发来消息：1.广播消息 2.更新在线人数
-			 */
-			webSocket.onmessage = function(event) {
-				console.log('WebSocket收到消息：%c' + event.data, 'color:green');
-				//获取服务端消息
-				var message = JSON.parse(event.data) || {};
-				var $messageContainer = $('.message-container');
-				//喉咙发炎
-				//if (message.type === 'SPEAK') {
-				$messageContainer
-						.append('<div class="mdui-card" style="margin: 10px 0;">'
-								+ '<div class="mdui-card-primary">'
-								+ '<div class="mdui-card-content message-content">'
-								+ message.sender
-								+ "："
-								+ message.content
-								+ '</div>' + '</div></div>');
-				//}
-				$('.chat-num').text(message.onlineCount);
-				//防止刷屏
-				var $cards = $messageContainer.children('.mdui-card:visible')
-						.toArray();
-				if ($cards.length > 5) {
-					$cards.forEach(function(item, index) {
-						index < $cards.length - 5 && $(item).slideUp('fast');
-					});
-				}
-			};
-			/**
-			 * 关闭连接
-			 */
-			webSocket.onclose = function(event) {
-				console.log('WebSocket关闭连接');
-			};
-			/**
-			 * 通信失败
-			 */
-			webSocket.onerror = function(event) {
-				console.log('WebSocket发生异常');
-			};
-			return webSocket;
-		}
-		
-		/**
-		 * 通过WebSocket对象发送消息给服务端
-		 */
-		function sendMsgToServer() {
-			var $message = $('#msg');
-			if ($message.val()) {
-				webSocket.send(JSON.stringify({
-					sender : $('#username').text(),
-					receiver : 'zzz',
-					content : $message.val()
-				}));
-				$message.val(null);
-			}
-		}
-		/**
-		 * 清屏
-		 */
-		function clearMsg() {
-			$(".message-container").empty();
-		}
-		/**
-		 * 使用ENTER发送消息
-		 */
-		document.onkeydown = function(event) {
-			var e = event || window.event
-					|| arguments.callee.caller.arguments[0];
-			e.keyCode === 13 && sendMsgToServer();
-		};
 	</script>
 </body>
 </html>

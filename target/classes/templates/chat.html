@@ -104,23 +104,35 @@
 	</div>
 </body>
 <script type="text/javascript" th:inline="javascript">
-	
+
+
 	window.onload = function() {
 		$("#talksub").click(function() {
-			//定义空字符串
-			var str = "";
-			if ($("#talkwords").val() == "") {
-				// 消息为空时弹窗
-				alert("消息不能为空");
-				return;
-			}
-			webSocket.send(JSON.stringify({
-				sender : [[${session.user.username}]],
-				receiver : $("#_onclick").val(),
-				content : $("#talkwords").val()
-			}));
-			$("#talkwords").val(null);
+			sendMsgToServer();
 		})
+	}
+	/**
+	 * 使用ENTER发送消息
+	 */
+	document.onkeydown = function(event) {
+		var e = event || window.event
+				|| arguments.callee.caller.arguments[0];
+		e.keyCode === 13 && sendMsgToServer();
+	};
+	function sendMsgToServer(){
+		//定义空字符串
+		var str = "";
+		if ($("#talkwords").val() == "") {
+			// 消息为空时弹窗
+			alert("消息不能为空");
+			return;
+		}
+		webSocket.send(JSON.stringify({
+			sender : [[${session.user.username}]],
+			receiver : $("#_onclick").val(),
+			content : $("#talkwords").val()
+		}));
+		$("#talkwords").val(null);
 	}
 	var contacts=[[${contacts}]];
 	if($(".talk_contact")!=null){
