@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<div th:replace="head::head"></div>
+	<div th:switch="${userList==null}">
+		<div th:case="true">无查询结果</div>
+		<div th:case="false">
+			<div th:each="user:${userList}">
+				<a th:href="@{/user/show/{username}(username=${user.username})}">[[${user.username}]] </a> 
+			</div>
+		</div>
+	</div>
+
+
+</body>
+</html>

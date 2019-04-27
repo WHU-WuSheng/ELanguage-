@@ -5,11 +5,17 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.core.convert.support.GenericConversionService;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.support.ConfigurableWebBindingInitializer;
+import org.springframework.web.bind.support.WebBindingInitializer;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
 
 import com.zzz.springboot.entity.User;
+import com.zzz.springboot.util.StringToTimestampConverter;
 import com.zzz.springboot.util.UrlUtil;
 
 /**
@@ -24,6 +30,9 @@ public class LoginInterceptor implements HandlerInterceptor {
 	@Autowired
 	private UrlUtil urlUtil;
 
+	
+	
+	
 	/* （非 Javadoc）
 	 * <p>Title: preHandle</p>
 	 * <p>Description: </p>
@@ -53,6 +62,8 @@ public class LoginInterceptor implements HandlerInterceptor {
 			}
 			return true;
 		}
+		
+		
 	}
 
 	@Override

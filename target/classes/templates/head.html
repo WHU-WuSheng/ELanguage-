@@ -24,8 +24,12 @@
 			<nav>
 				<a href="/">首页</a>
 			</nav>
-			<nav>选项</nav>
-			<nav>选项</nav>
+			<nav>
+			胡昱松
+			</nav>
+			<nav>
+		    张志铮
+			</nav>
 			<nav>选项</nav>
 			<nav>选项</nav>
 		</div>
@@ -35,7 +39,11 @@
 
 		<div class="flex-right">
 			<!--<div class="header-search">-->
-			<!--<input type="text" placeholder="查询课程">-->
+			<form action="/user/selectUserByLanguage"> 
+				<input id="search" type="text" name="language" placeholder="查询课程">
+				<input type="submit" value="查询" >
+			</form>
+			
 			<!--<i class="fa fa-search" aria-hidden="true"></i>-->
 			<!--</div>-->
 			<div class="header-list">
@@ -71,7 +79,7 @@
 		 */
 		 var webSocket;
 		 if([[${session.user!=null}]]){
-			 webSocket = new WebSocket('ws://192.168.1.101:80/chat/'+[[${session.user?.username}]]);
+			 webSocket = new WebSocket('ws://localhost:80/chat/'+[[${session.user?.username}]]);
 			 /**
 				 * 当服务端打开连接
 				 */

@@ -14,13 +14,15 @@
 		$("#showTeach").submit();
 	}
 </script>
+<script type="text/javascript" src="/js/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="/js/user.js"></script>
 </head>
 <body>
 	<div th:replace="head::head"></div>
 	<div th:switch="${selectUser==null}" th:remove="tag">
 		<div th:case="true">该用户不存在</div>
 		<div th:case="false" th:remove="tag">
-			<table border="1">
+			<table border="1" id="userInfo">
 				<tr>
 					<td>用户名</td>
 					<td th:text="${selectUser?.username }"></td>
@@ -71,10 +73,18 @@
 					<a th:href="@{/chat/show?username={username}(username=${selectUser?.username})}"
 						th:text="|与${selectUser?.sex=='男'?'他':'她'}聊天|"></a> <a href="javascript:;"
 						onclick="showCapability();" th:text="|查看${selectUser?.sex=='男'?'他':'她'}发布的技能|"></a>
+						<input id="learnApply" type="button" value="申请学习">
+						<div id="applyStyle"></div>
+						<div id="applyResult"></div>
 				</div>
+				
+				
+				
 			</div>
 		</div>
 	</div>
-
+	
+	
+	
 </body>
 </html>

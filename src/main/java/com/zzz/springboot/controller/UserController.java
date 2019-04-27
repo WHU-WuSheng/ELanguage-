@@ -23,7 +23,7 @@ import com.zzz.springboot.entity.User;
 import com.zzz.springboot.service.IUserService;
 
 import javassist.expr.NewArray;
-import net.bytebuddy.asm.Advice.This;
+//import net.bytebuddy.asm.Advice.This;
 
 @Controller
 @RequestMapping("/user")
@@ -120,4 +120,14 @@ public class UserController {
 		modelMap.put("user", user);
 		return "info";
 	}
+	
+	//搜索
+	@RequestMapping(value = "selectUserByLanguage", method = RequestMethod.GET)
+	public String selectUserByLanguage(String language, ModelMap modelMap) throws Exception {
+		List<User> userList = iUserService.selectUserByLanguage(language);
+		
+		modelMap.put("userList", userList);
+		return "searchShow";
+	}
+	
 }

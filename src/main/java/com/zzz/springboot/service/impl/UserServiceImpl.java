@@ -74,4 +74,10 @@ public class UserServiceImpl implements IUserService {
 		return this.iUserMapper.getAllUsername();
 	}
 
+	@Override
+	public List<User> selectUserByLanguage(String language) throws Exception {
+		// TODO Auto-generated method stub
+		return iUserMapper.selectUserByLanguage(language);
+	}
+
 }

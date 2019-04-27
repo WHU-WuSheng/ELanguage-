@@ -8,10 +8,10 @@
 	<div th:replace="head::head"></div>
 	<div th:each="recordType,iterStat:${records }" th:remove="tag">
 		<div th:switch="${iterStat.index}" th:remove="tag">
-			<div th:case="0">0号记录</div>
-			<div th:case="1">1号记录</div>
-			<div th:case="2">2号记录</div>
-			<div th:case="3">3号记录</div>
+			<div th:case="0">待审核</div>
+			<div th:case="1">待开始</div>
+			<div th:case="2">进行中</div>
+			<div th:case="3">已完成</div>
 		</div>
 		<div th:switch="${recordType.size()==0}" th:remove="tag">
 			<div th:case="true">没有记录</div>
@@ -21,7 +21,8 @@
 						<th>学生</th>
 						<th>语言</th>
 						<th>申请时间</th>
-						<div th:if="${iterStat.index==2 || iterStat.index==3}" th:remove="tag">
+						<div th:if="${iterStat.index==2 || iterStat.index==3}"
+							th:remove="tag">
 							<th>开始时间</th>
 						</div>
 						<div th:if="${iterStat.index==3}" th:remove="tag">
@@ -32,24 +33,41 @@
 						<div th:if="${iterStat.index!=0}" th:remove="tag">
 							<th>收费</th>
 						</div>
+						<div>
+							<th></th>
+						</div>
 					</tr>
 					<div th:each="record:${recordType }" th:remove="tag">
-						<tr>
-							<td th:text="${record.student }"></td>
-							<td th:text="${record.language }"></td>
-							<td th:text="${#dates.format(record.applyTime,'yyyy-MM-dd HH：mm：ss')}"></td>
-							<div th:if="${iterStat.index==2 || iterStat.index==3}" th:remove="tag">
-								<td th:text="${#dates.format(record.startTime,'yyyy-MM-dd HH：mm：ss')}"></td>
-							</div>
-							<div th:if="${iterStat.index==3}" th:remove="tag">
-								<td th:text="${#dates.format(record.endTime,'yyyy-MM-dd HH：mm：ss')}"></td>
-								<td th:text="${record.remark }"></td>
-								<td th:text="${record.star }"></td>
-							</div>
-							<div th:if="${iterStat.index!=0}" th:remove="tag">
-								<td th:text="${record.money }"></td>
-							</div>
-						</tr>
+					<tr>
+						<td><a
+							th:href="@{/user/show/{username}(username=${record.student})}"
+							th:text="${record.teacher }"></a></td>
+						<td th:text="${record.language }"></td>
+						<td
+							th:text="${#dates.format(record.applyTime,'yyyy-MM-dd HH：mm：ss')}"></td>
+						<div th:if="${iterStat.index==2 || iterStat.index==3}"
+							th:remove="tag">
+							<td
+								th:text="${#dates.format(record.startTime,'yyyy-MM-dd HH：mm：ss')}"></td>
+						</div>
+						<div th:if="${iterStat.index==3}" th:remove="tag">
+							<td
+								th:text="${#dates.format(record.endTime,'yyyy-MM-dd HH：mm：ss')}"></td>
+							<td th:text="${record.remark }"></td>
+							<td th:text="${record.star }"></td>
+						</div>
+						<div th:if="${iterStat.index!=0}" th:remove="tag">
+							<td th:text="${record.money }"></td>
+						</div>
+						<div th:if="${iterStat.index ==0}" th:remove="tag">
+						<td>
+						<td><a
+							th:href="@{/record/selectSingleRecord/{teacher}/{student}/{applyTime}(teacher=${session.user.username},student=${record.student},applyTime=${record.applyTime})}"
+							th:text="更多信息和处理"></a></td>
+						 </td>
+						</div>
+
+					</tr>
 					</div>
 				</table>
 			</div>

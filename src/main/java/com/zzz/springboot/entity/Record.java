@@ -27,6 +27,6 @@ public class Record {
 	private Timestamp endTime;
 	private String remark;
 	private Integer money;
-	private Integer star;
+	private Integer star=0;
 	private Integer state;
 }

@@ -1,5 +1,6 @@
 package com.zzz.springboot.controller;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -21,15 +22,17 @@ public class RecordController {
 	private IRecordService iRecordService;
 
 	@RequestMapping(value = "applyRecord", method = RequestMethod.POST)
-	public String applyRecord(Record record, ModelMap modelMap) throws Exception {
+	public String applyRecord(Record record,String money,ModelMap modelMap) throws Exception {
 		record.setState(0);
+		record.setApplyTime(new Timestamp(System.currentTimeMillis()));
+		record.setMoney(Integer.valueOf(money));
 		iRecordService.add(record);
 		modelMap.put("record", record);
-		return "applySuccess";
+		return "userComponent/applySuccess";
 	}
 
-	@RequestMapping(value = "selectSingleRecord", method = RequestMethod.POST)
-	public String selectSingleRecord(String teacher, String student, Date applyTime, ModelMap modelMap)
+	@RequestMapping(value = "selectSingleRecord/{teacher}/{student}/{applyTime}")
+	public String selectSingleRecord(@PathVariable("teacher") String teacher, @PathVariable("student") String student, @PathVariable("applyTime") Timestamp applyTime, ModelMap modelMap)
 			throws Exception {
 		Record record = iRecordService.selectSingleRecord(teacher, student, applyTime);
 		modelMap.put("record", record);
@@ -42,8 +45,32 @@ public class RecordController {
 		record.setState(5);//目前5为取消订单状态
 		return "recordShow";
 	}
+	
+	@RequestMapping(value = "modifyRecord")
+	public String modifyRecord(String teacher,String student,Timestamp applyTime,String remark,Integer star, ModelMap modelMap)
+			throws Exception {
+		Record record = iRecordService.selectSingleRecord(teacher, student, applyTime);
+		System.out.println(star);
+		record.setRemark(remark);
+		record.setStar(star);
+		iRecordService.modify(record);
+		modelMap.put("record", record);
+		return "recordInfo";
+	}
+	
+	@RequestMapping(value = "solveRecord")
+	public String solveRecord(String teacher,String student,Timestamp applyTime,Integer state, ModelMap modelMap)
+			throws Exception {
+		Record record = iRecordService.selectSingleRecord(teacher, student, applyTime);
+		record.setState(state);
+		iRecordService.modify(record);
+		modelMap.put("record", record);
+		return "recordInfo";
+	}
+	
+	
 
-	@RequestMapping(value = "showTeach/{teacher}", method = RequestMethod.POST)
+	@RequestMapping(value = "showTeach/{teacher}")
 	public String selectTeach(@PathVariable("teacher") String teacher, ModelMap modelMap) throws Exception {
 		int n = 4;
 		List<Record>[] records = new ArrayList[n];
@@ -53,7 +80,7 @@ public class RecordController {
 		return "teachRecord";
 	}
 
-	@RequestMapping(value = "showStudy/{student}", method = RequestMethod.POST)
+	@RequestMapping(value = "showStudy/{student}")
 	public String selectStudy(@PathVariable("student") String student, ModelMap modelMap) throws Exception {
 		int n = 4;
 		List<Record>[] records = new ArrayList[n];

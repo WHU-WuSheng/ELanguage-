@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript" src="/js/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="/js/record.js"></script>
+</head>
+<body>
+	老师：
+	<text id="teacher" th:text="${record.teacher}" />
+	<br> 学生：
+	<text id="student" th:text="${record.student}" />
+	<br> 语言：
+	<text id="language" th:text="${record.language}" />
+	<br> 申请时间：
+	<text id="applyTime" th:text="${record.applyTime}" />
+	<br> 开始时间：
+	<text id="startTime" th:text="${record.startTime}" />
+	<br> 结束时间：
+	<text id="endTime" th:text="${record.endTime}" />
+	<br> 价格：
+	<text id="money" th:text="${record.money}" />
+	<br>
+
+
+	<div th:if="${record.state==0 && session.user.username==record.teacher}">
+		<select id="state">
+				<option value="1">同意</option>
+				<option value="5">拒绝</option>
+		</select>
+		<input id="solve" type="button" value="处理">
+	</div>
+	
+	
+	
+	<div th:if="${record.state==3}">
+		<div th:if="${record.remark!=null}">
+			评价：
+			<text id="remarks" th:text="${record.remark}" />
+			<br> 星级：
+			<text id="star" th:text="${record.star}" />
+			<br>
+		</div>
+		<div th:if="${record.remark==null}">
+			暂无评价：<br> <input type="text" id="remarkContent"
+				placeholder="请输入你对课的评价"> 请给此课打*：<select id="star">
+				<option>1</option>
+				<option>2</option>
+				<option>3</option>
+				<option>4</option>
+			</select> <br> <input id="remark" type="button" value="提交评价"><br>
+		</div>
+		<input type="text" id="refundReason" placeholder="请输入你申请退款的理由">
+		<input id="refund" type="button" value="申请退款">
+	</div>
+	
+
+</body>
+</html>

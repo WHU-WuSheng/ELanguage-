@@ -1,0 +1,24 @@
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<script type="text/javascript" src="/js/user.js"></script>
+<div>
+	<form action="">
+		<text>请选择你需要的课程:</text>
+		<select th:each="capability:${capabilities}" id="language">
+			<option>[[${capability.language}]]</option>
+		</select> <br>
+		
+		<text>请选择你期望的开始时间</text>
+		<input type="datetime-local" id="startTime" format="yyyy-MM-dd HH:mm"placeholder="请输入日期">
+		<br>
+		<text>请选择你期望的结束时间</text>
+		<input type="datetime-local" id="endTime" format="yyyy-MM-dd HH:mm"placeholder="请输入日期">
+		<br>
+		<text>请选择你期望的学习费用</text>
+		<input type="text" id="money" placeholder="请输入1至4位数字">
+			<!-- onblur="if(!/^[\d]{1,3}$/.test(value))"> --><!-- 你来提醒 -->
+			
+		<br>
+		<input id="applyConfirm" type="button" value="确认申请">
+		<input id="username" th:value=@{${session.user.username}} hidden="true">
+	</form>
+</div>

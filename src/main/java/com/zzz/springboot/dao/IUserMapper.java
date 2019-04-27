@@ -41,6 +41,10 @@ public interface IUserMapper {
 
 	@Select("select * from user where credit>=#{credit} order by credit desc")
 	List<User> selectUserByCredit(int credit) throws Exception;
+	
+	//搜索
+	@Select("select * from user where username in (select username from capability where language = #{language})")
+	List<User> selectUserByLanguage(String language) throws Exception;
 
 	@Insert("insert into\r\n" + "		user(username,password,phone,email,profile,picture,sex,age)\r\n"
 			+ "		values(#{username},#{password},#{phone},#{email},#{profile},#{picture},#{sex},#{age})")

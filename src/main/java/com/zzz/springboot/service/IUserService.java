@@ -23,6 +23,9 @@ public interface IUserService {
 	User selectUserByEmail(String email) throws Exception;
 
 	User selectUserByPhone(String phone) throws Exception;
+	
+	//搜索
+	List<User> selectUserByLanguage(String language) throws Exception;
 
 	void modify(User user) throws Exception;
 

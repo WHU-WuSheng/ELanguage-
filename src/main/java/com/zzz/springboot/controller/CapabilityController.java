@@ -8,6 +8,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.zzz.springboot.entity.Capability;
 import com.zzz.springboot.service.ICapabilityService;
@@ -38,12 +39,17 @@ public class CapabilityController {
 	}
 
 	@RequestMapping(value = "show/{username}")
-	public String selectCapabilityByUsername(@PathVariable("username") String username, ModelMap modelMap)
+	public String selectCapabilityByUsername(@PathVariable("username") String username, @RequestParam(value="type",required = false) String type,ModelMap modelMap)
 			throws Exception {
 		modelMap.put("capabilities", iCapabilityService.selectCapabilityByUsername(username));
-		return "capability";
+		if(type == null)
+			return "capability";
+		else
+			return "userComponent/learnApply";
 	}
 
+	
+	
 	@RequestMapping(value = "deleteOne/{username}/{language}", method = RequestMethod.POST)
 	public String deleteOneCapability(@PathVariable("username") String username,
 			@PathVariable("language") String language) throws Exception {
