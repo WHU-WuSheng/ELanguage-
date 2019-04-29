@@ -11,6 +11,7 @@
 		<div th:case="false">
 			<div th:each="user:${userList}">
 				<a th:href="@{/user/show/{username}(username=${user.username})}">[[${user.username}]] </a> 
+				
 			</div>
 		</div>
 	</div>

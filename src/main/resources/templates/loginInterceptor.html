@@ -19,14 +19,44 @@
 		}
 	}
 </script>
+<style>
+*{
+	margin: 0;
+	padding: 0;
+	text-decoration: none;
+}
+.hint {
+	text-align: center;
+	margin: 20px auto;
+	color: #f00;
+	font-size: 20px;
+}
+.jump{
+	text-align: center;
+	color: #666;
+	margin: 20px auto;
+}
+.link {
+	text-align: center;
+}
+a{
+	color: #000;
+}
+a:active {
+	color: #666;
+}
+a:visited {
+	color: #666;
+}
+</style>
 </head>
 <body>
-	<h1>当前操作需要登录</h1>
-	<span id="remainSeconds" style="color: red;">5</span>秒后跳转登录界面
-	<br>
+	<div class="hint">当前操作需要登录</div>
+	<div class="jump"><span id="remainSeconds" style="color: red;">5</span>秒后跳转登录界面</div>
 	<form action="/login" method="get">
 		<input type="hidden" name="url" th:value="${url }">
 	</form>
-	<a href="javascript:;" onclick="login();">立即跳转</a>
+	<div class="link"><a href="javascript:;" onclick="login();">立即跳转</a></div>
+	
 </body>
 </html>

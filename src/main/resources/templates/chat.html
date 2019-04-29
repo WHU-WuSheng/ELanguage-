@@ -5,26 +5,69 @@
 <title>聊天</title>
 </head>
 <style type="text/css">
+.main{
+	width: 1200px;
+	height:auto;
+	margin: 20px auto;
+	
+}
+.talk_contacts {
+	float:left;
+}
+.list{
+	width: 150px;
+	height:50px;
+	text-align:center;
+	padding:13px;
+	margin:10px auto;
+	border: 2px solid LightSalmon;
+	border-radius: 5px;
+	color:	#8B8682;
+}
 .talk_con {
-	width: 600px;
+	float:right;
+	width: 800px;
 	height: 500px;
-	border: 1px solid #666;
-	margin: 50px auto 0;
 	background: #f9f9f9;
+	border-radius:5px;
 }
 
 .talk_show {
 	width: 580px;
 	height: 420px;
-	border: 1px solid #666;
 	background: #fff;
 	margin: 10px auto 0;
 	overflow: auto;
+	font-size: 12px;
 }
 
 .talk_input {
 	width: 580px;
-	margin: 10px auto 0;
+	margin: 20px auto;
+}
+.talk_input input {
+	border: 1px solid #ccc;
+	padding: 7px 0px;
+	border-radius: 3px;
+	padding-left:5px;
+	-webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+	box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+	-webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+	-o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+	transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s
+}
+input:focus{
+				border-color: #66afe9;
+				outline: 0;
+				-webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6);
+				box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6)
+}
+input[type="button"] {
+	width: 100px;
+	text-align: center;
+	color: #66afe9;
+	background: #fff;
+	padding-left: 0;
 }
 
 .whotalk {
@@ -34,25 +77,12 @@
 	outline: none;
 }
 
-.talk_word {
-	width: 420px;
-	height: 26px;
-	padding: 0px;
-	float: left;
-	margin-left: 10px;
-	outline: none;
-	text-indent: 10px;
-}
 
-.talk_sub {
-	width: 56px;
-	height: 30px;
-	float: left;
-	margin-left: 10px;
-}
+
 
 .atalk {
 	margin: 10px;
+	
 }
 
 .atalk span {
@@ -75,20 +105,27 @@
 	color: #fff;
 	padding: 5px 10px;
 }
+.talk_word {
+	color: #666;
+	text-indent: 4px;
+	font-size: 12px;
+}
+
 </style>
 <body>
 	<div th:replace="head::head"></div>
+	
+	<div class="main">
 	<input type="hidden" id="_onclick">
-	<div>
 		<div class="talk_contacts">
 			<div th:if="${newContact!=null}" th:remove="tag">
-				<div th:id="${newContact}">
+				<div th:id="${newContact}" class="list">
 					<div th:text="${newContact}" th:onclick="|getChat('${newContact}');|" class="talk_contact"></div>
 					<div class="talk_hint" style="color: red;"></div>
 				</div>
 			</div>
-			<div th:each="contact:${contacts}" th:remove="tag">
-				<div th:id="${contact}">
+			<div th:each="contact:${contacts}" th:remove="tag" class="list">
+				<div th:id="${contact}" class="list">
 					<div th:text="${contact}" th:onclick="|getChat('${contact}');|" class="talk_contact"></div>
 					<div class="talk_hint" style="color: red;"></div>
 				</div>

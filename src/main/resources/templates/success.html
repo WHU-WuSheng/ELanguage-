@@ -19,13 +19,22 @@
 		}
 	}
 </script>
+<style>
+	.succes{
+		text-align:center;
+	}
+	
+</style>
 </head>
 <body>
-	<h1 th:text="${success }"></h1>
-	<span id="remainSeconds" style="color: red;">5</span>
-	<span th:text="|秒后跳转${view }界面|"></span>
-	<br>
-	<form th:action="${url }" method="post"></form>
-	<a href="javascript:;" onclick="back();">立即跳转</a>
+	<div th:text="${success }"></div>
+	<div class="success">
+		<span id="remainSeconds" style="color: red;">5</span>
+		<span th:text="|秒后跳转${view }界面|"></span>
+		<br/>
+		<form th:action="${url }" method="post"></form>
+		<a href="javascript:;" onclick="back();">立即跳转</a>
+	</div>
+	
 </body>
 </html>

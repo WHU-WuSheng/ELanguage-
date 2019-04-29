@@ -3,22 +3,17 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>首页</title>
-<script src="/js/jquery-3.3.1.min.js"></script>
-<script src="/js/banner-slide.js"></script>
-<script type="text/javascript">
-	function showOther(id) {
-		$("#" + id).submit();
+<link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<style>
+	.table{
+		width: 80%;
+		margin: 30px auto;
 	}
-	function download() {
-		//restful风格url中出现'%'要用'%25'转义，否则报400错误。首先encodeURIComponent去掉参数中的'/'，但是生成的字符串中有'%'，所以用replace方法将'%'替换成'%25'。
-		$("#_download").attr(
-				"action",
-				"/download/"
-						+ encodeURIComponent($("#_filename").val()).replace(
-								new RegExp(/(%)/g), "%25"));
-		$("#_download").submit();
+	.progress {
+		height: 2px;
 	}
-</script>
+</style>
+
 </head>
 <body>
 	<div th:replace="head::head"></div>
@@ -56,65 +51,20 @@
 			<div class="rec-title">名师推荐</div>
 			<div class="rec-bottom-line"></div>
 		</div>
-		<div class="course-new">
-			<img src="" alt="">
-			<div></div>
-			<div></div>
-			<div></div>
-		</div>
-		<div class="course-new">
-			<img src="" alt="">
-			<div></div>
-			<div></div>
-			<div></div>
-		</div>
-		<div class="course-new">
-			<img src="" alt="">
-			<div></div>
-			<div></div>
-			<div></div>
-		</div>
-		<div class="course-new">
-			<img src="" alt="">
-			<div></div>
-			<div></div>
-			<div></div>
-		</div>
+	
 	</div>
-	<div class="profile-recommend">
-		<img src="" alt=""> <a href="">
-			<div class="button-enter"></div>
-		</a> <img src="" alt=""> <a href="">
-			<div class="button-enter"></div>
-		</a> <img src="" alt=""><img src="" alt=""><img src="" alt=""> <img src="" alt=""><img
-			src="" alt=""><img src="" alt="">
-	</div>
-	<div class="photo-gallery"></div>
-	<div class="footer">
-		<div class="vh_footer">
-			<ul>
-				<li></li>
-				<li></li>
-				<li></li>
-				<li></li>
-			</ul>
-		</div>
-		<div class="list-footer-left"></div>
-		<div class="list-footer-right"></div>
-		<div class="footer-copyright"></div>
-	</div>
-	<table border="1">
+	<table class="table table-hover">
 		<tr>
 			<th>用户名</th>
 			<th>积分</th>
 		</tr>
-		<div th:each="user:${users}" th:remove="tag">
-			<tr>
-				<td><a href="javascript:;" th:onclick="|showOther('${user.username}');|"
-					th:text="${user.username}"> </a></td>
-				<td th:text="${user.credit}"></td>
-			</tr>
-		</div>
+	<div th:each="user:${users}" th:remove="tag">
+		<tr>
+			<td><a href="javascript:;" th:onclick="|showOther('${user.username}');|"
+				th:text="${user.username}"> </a></td>
+			<td th:text="${user.credit}"></td>
+		</tr>
+	</div>
 	</table>
 	<div th:each="user:${users}" th:remove="tag">
 		<form th:id="${user.username}" th:action="@{/user/show/{username}(username=${user.username})}"
@@ -126,4 +76,22 @@
 			onclick="download();">
 	</form> -->
 </body>
+<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdn.bootcss.com/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://cdn.bootcss.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<script src="/js/banner-slide.js"></script>
+<script type="text/javascript">
+	function showOther(id) {
+		$("#" + id).submit();
+	}
+	function download() {
+		//restful风格url中出现'%'要用'%25'转义，否则报400错误。首先encodeURIComponent去掉参数中的'/'，但是生成的字符串中有'%'，所以用replace方法将'%'替换成'%25'。
+		$("#_download").attr(
+				"action",
+				"/download/"
+						+ encodeURIComponent($("#_filename").val()).replace(
+								new RegExp(/(%)/g), "%25"));
+		$("#_download").submit();
+	}
+</script>
 </html>
