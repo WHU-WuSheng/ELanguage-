@@ -31,17 +31,18 @@
       </div>
       <div class="login-method-list">
         <div class="login-method account"></div>
-        <div class="login-method mobile"></div>
-        <div class="login-method mail"></div>
+        <div class="login-method mobile" style="display:none"></div>
+        <div class="login-method mail" style="display:none"></div>
       </div>
       <div class="text1">账号</div>
       <input type="text" class="message1" name="user"><span class="identifyCode"></span>  <!-- one -->
       <div class="text1-hint"   ></div>
       <div class="text2">密码</div>
+     <!--  <input type="text" class="message2" name="password"><span class="identifyCode"></span>  one -->
       <div class="pass">
-      <input  class="message2"  name="password" type = 'text' style="display:none">  
-      <input  class="message2_hidden"  name="password" type = 'password'>      <!-- two -->
         
+      <input  class="message2"   id="ms" name="code" type = 'text' style="display:none">  
+      <input  class="message2 message2_hidden"  id= "ms2" name="password" type = 'password'><!-- two -->
       </div>
       <div class="text2-hint"></div>
       <input  hidden="true" name="url">
@@ -231,7 +232,7 @@ let judGe = ()=>{
   }
 };
 
-login_method[0].style.boxShadow = "0px 1px 2px #aaa";
+//login_method[0].style.boxShadow = "0px 1px 2px #aaa";
 
 for (let method of login_method) {
 	if (method === login_method[0]) {

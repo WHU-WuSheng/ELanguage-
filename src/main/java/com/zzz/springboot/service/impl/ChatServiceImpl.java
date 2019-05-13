@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.zzz.springboot.dao.IChatMapper;
 import com.zzz.springboot.entity.Chat;
+import com.zzz.springboot.entity.NewInfo;
 import com.zzz.springboot.service.IChatService;
 
 /**
@@ -37,6 +38,18 @@ public class ChatServiceImpl implements IChatService {
 	public List<String> selectContact(String username) throws Exception {
 		// TODO 自动生成的方法存根
 		return this.iChatMapper.selectContact(username);
+	}
+
+	@Override
+	public List<NewInfo> selectNewInfos(String username) throws Exception {
+		// TODO Auto-generated method stub
+		return this.iChatMapper.selectNewinfos(username);
+	}
+
+	@Override
+	public void hasRead(String from, String to) throws Exception {
+		// TODO Auto-generated method stub
+		this.iChatMapper.hasRead(from, to);
 	}
 
 }

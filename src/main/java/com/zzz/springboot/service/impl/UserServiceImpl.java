@@ -25,6 +25,7 @@ public class UserServiceImpl implements IUserService {
 	public User login(String user, String password) throws Exception {
 		// TODO 自动生成的方法存根
 		User user2 = this.iUserMapper.selectUserByUsernameAndPassword(user, password);
+		System.out.println("select * from user where username="+user+" and password="+password);
 		if (user2 == null)
 			user2 = this.iUserMapper.selectUserByPhoneAndPassword(user, password);
 		if (user2 == null)

@@ -54,4 +54,23 @@ public class RecordServiceImpl implements IRecordService {
 		return this.iRecordMapper.selectSingleRecord(teacher, student, applyTime);
 	}
 
+	@Override
+	public List<Record> selectReadyUpdateRecord(String username) throws Exception {
+		// TODO Auto-generated method stub
+		
+		
+		
+		return this.iRecordMapper.selectReadyUpdateRecord(username);
+	}
+
+	@Override
+	public List<Record> selectRecordByStudent(String username) throws Exception {
+		// TODO Auto-generated method stub
+		return iRecordMapper.selectRecordByStudent(username);
+	}
+	
+	
+	
+	
+
 }

@@ -19,6 +19,8 @@ public interface ICapabilityService {
 	List<Capability> selectCapabilityByLanguageAndLevel(String language, int level) throws Exception;
 
 	List<Capability> selectCapabilityByUsername(String username) throws Exception;
+	
+	Capability selectCapabilityByUsernameAndLanguage(String username,String language) throws Exception;
 
 	void modify(Capability capability) throws Exception;
 

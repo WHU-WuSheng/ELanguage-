@@ -2,72 +2,51 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<script src="/js/jquery-3.3.1.min.js"></script>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
 <title>聊天</title>
 </head>
 <style type="text/css">
-.main{
-	width: 1200px;
-	height:auto;
-	margin: 20px auto;
+.wrapper{
+	display:flex;
+}
+.talk_contacts{
+	flex:0 1 200px;
+	margin:50px auto;
+}
+.meb-list{
+	width: 200px;
+	height:30px;
+	line-height:30px;
+	text-align: center;
+	font-size: 12px !important;
 	
 }
-.talk_contacts {
-	float:left;
-}
-.list{
-	width: 150px;
-	height:50px;
-	text-align:center;
-	padding:13px;
-	margin:10px auto;
-	border: 2px solid LightSalmon;
-	border-radius: 5px;
-	color:	#8B8682;
-}
 .talk_con {
-	float:right;
-	width: 800px;
+	width: 600px;
 	height: 500px;
-	background: #f9f9f9;
+	border: 1px solid #ccc;
 	border-radius:5px;
+	margin: 50px auto 0;
+	background: #f9f9f9;
 }
 
 .talk_show {
 	width: 580px;
 	height: 420px;
+	border: 1px solid #ccc;
 	background: #fff;
 	margin: 10px auto 0;
 	overflow: auto;
-	font-size: 12px;
 }
 
 .talk_input {
 	width: 580px;
-	margin: 20px auto;
-}
-.talk_input input {
-	border: 1px solid #ccc;
-	padding: 7px 0px;
-	border-radius: 3px;
-	padding-left:5px;
-	-webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
-	box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
-	-webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
-	-o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
-	transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s
-}
-input:focus{
-				border-color: #66afe9;
-				outline: 0;
-				-webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6);
-				box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6)
-}
-input[type="button"] {
-	width: 100px;
-	text-align: center;
-	color: #66afe9;
-	background: #fff;
-	padding-left: 0;
+	margin: 10px auto 0;
+	
 }
 
 .whotalk {
@@ -77,12 +56,25 @@ input[type="button"] {
 	outline: none;
 }
 
+.talk_word {
+	width: 420px !important;
+	height: 26px;
+	padding: 0px;
+	float: left;
+	margin-left: 10px;
+	outline: none;
+	text-indent: 10px;
+}
 
-
+.talk_sub {
+	width: 56px;
+	height: 30px;
+	float: left;
+	margin-left: 10px;
+}
 
 .atalk {
 	margin: 10px;
-	
 }
 
 .atalk span {
@@ -105,40 +97,46 @@ input[type="button"] {
 	color: #fff;
 	padding: 5px 10px;
 }
-.talk_word {
-	color: #666;
-	text-indent: 4px;
-	font-size: 12px;
+.bg{width:100%;height:100vh;position:absolute;z-index:-2}.bg-img{width:100%;height:100%;background:url("../../img/login/bg.jpg") no-repeat center center;-webkit-background-size:cover;background-size:cover} 
+.form-control{
+	font-size:13px !important;
 }
-
 </style>
 <body>
+<div class="bg">
+<div class="bg-img">
 	<div th:replace="head::head"></div>
-	
-	<div class="main">
 	<input type="hidden" id="_onclick">
+	<div class="wrapper">
 		<div class="talk_contacts">
-			<div th:if="${newContact!=null}" th:remove="tag">
-				<div th:id="${newContact}" class="list">
-					<div th:text="${newContact}" th:onclick="|getChat('${newContact}');|" class="talk_contact"></div>
-					<div class="talk_hint" style="color: red;"></div>
-				</div>
-			</div>
-			<div th:each="contact:${contacts}" th:remove="tag" class="list">
-				<div th:id="${contact}" class="list">
-					<div th:text="${contact}" th:onclick="|getChat('${contact}');|" class="talk_contact"></div>
-					<div class="talk_hint" style="color: red;"></div>
-				</div>
+			
+			<div th:each="u,key:${map}" th:remove="tag">
+				
+					<div th:id="${key.current.key}" class="meb-list btn btn-default">
+						<span th:text="${key.current.key}" th:onclick="|getChat('${key.current.key}');|" class="talk_contact"></span>
+						&nbsp;&nbsp;&nbsp;
+						<span th:text="${key.current.value}"></span>
+					</div>
+				
 			</div>
 		</div>
 		<div class="talk_con">
 			<div class="talk_show" id="words"></div>
-			<div class="talk_input">
-				<input type="text" class="talk_word" id="talkwords"> <input type="button" value="发送"
-					class="talk_sub" id="talksub">
+			<div class="talk_input form-inline">
+				<div class="form-group">
+					<input type="text" class="talk_word form-control" id="talkwords"> 
+				</div>
+				<div class="form-group">
+					<input type="button" value="发送" class="talk_sub form-control" id="talksub">
+				</div>
+				<div class="form-group">
+					<input type="button" value="通话" id="calling" class="form-control">
+				</div>
 			</div>
 		</div>
 	</div>
+</div>
+</div>
 </body>
 <script type="text/javascript" th:inline="javascript">
 
@@ -146,6 +144,9 @@ input[type="button"] {
 	window.onload = function() {
 		$("#talksub").click(function() {
 			sendMsgToServer();
+		});
+		$("#calling").click(function(){
+			makeCalling();
 		})
 	}
 	/**
@@ -165,7 +166,7 @@ input[type="button"] {
 			return;
 		}
 		webSocket.send(JSON.stringify({
-			sender : [[${session.user.username}]],
+			sender : [[${session.user?.username}]],
 			receiver : $("#_onclick").val(),
 			content : $("#talkwords").val()
 		}));
@@ -185,7 +186,7 @@ input[type="button"] {
 				$("#words").html(null);
 				for ( var chat of data) {
 					var str = "";
-					if(chat.sender==[[${session.user.username}]]){
+					if(chat.sender==[[${session.user?.username}]]){
 						str = '<div class="btalk"><span>' + chat.content
 						+ '</span></div>';
 					}
@@ -198,6 +199,21 @@ input[type="button"] {
 			}
 		});
 	}
+	
+	
+	
+	
+	
+	function makeCalling(){
+		webSocket.send(JSON.stringify({
+			sender : [[${session.user?.username}]],
+			receiver : $("#_onclick").val(),
+			content : "makeCalling..."
+		}));
+	}
+	
+	
+	
 	/**
 	 * 当服务端发来消息：1.广播消息 2.更新在线人数
 	 */
@@ -206,15 +222,19 @@ input[type="button"] {
 		//获取服务端消息
 		var chat = JSON.parse(event.data) || {};
 		var str;
-		if(chat.sender==[[${session.user.username}]]&&chat.receiver==$("#_onclick").val()){
+		if(chat.sender==[[${session.user?.username}]]&&chat.receiver==$("#_onclick").val()){
 			str = '<div class="btalk"><span>' + chat.content
 			+ '</span></div>';
 			$("#words").html($("#words").html()+str);
+			
+			
 		}
-		else if(chat.receiver==[[${session.user.username}]]&&chat.sender==$("#_onclick").val()){
+		else if(chat.receiver==[[${session.user?.username}]]&&chat.sender==$("#_onclick").val()){
 			str = '<div class="atalk"><span>' + chat.content
 			+ '</span></div>';
 			$("#words").html($("#words").html()+str);
+			
+			
 		}
 		else{
 			if(contacts.indexOf(chat.sender)>-1){
@@ -230,6 +250,36 @@ input[type="button"] {
 				contacts.push(chat.sender);
 			}
 		}
+		
+		
+		if(chat.receiver==[[${session.user?.username}]]&&chat.sender==$("#_onclick").val()){
+			$("#"+chat.sender).children().eq(1).html(0);
+			$.ajax({
+				type : 'post',
+				url : '/chat/hasRead',
+				data : {
+					username : chat.sender
+				},
+				success : function(data) {
+					
+				}
+				
+			});
+		}else{
+			$("#"+chat.sender).children().eq(1).html($("#"+chat.sender).children().eq(1).text()-0+1);
+		}
+		
+		if(chat.receiver==[[${session.user?.username}]]){
+			if(chat.content=='makeCalling...'){
+				getCalling(chat.sender);
+			}else if(chat.content=='rejectCalling...'){
+				rejectCalling(chat.sender);
+			}else if(chat.content=="acceptCalling..."){
+				acceptCalling(chat.receiver,chat.sender);
+			}
+		}
+		
+		
 		/* //防止刷屏
 		var $cards = $messageContainer.children('.mdui-card:visible')
 				.toArray();
@@ -240,32 +290,56 @@ input[type="button"] {
 		} */
 	};
 	function getChat(username) {
-		$("#"+username).children(".talk_hint").text("");
+		//$("#"+username).children(".talk_hint").text("");
 		$("#"+$("#_onclick").val()).children(".talk_contact").css("color","black");
 		$("#"+username).children(".talk_contact").css("color","red");
-		$("#_onclick").val(username);
-		$.ajax({
-			type : 'post',
-			url : '/chat/get',
-			data : {
-				username : username
-			},
-			success : function(data) {
-				$("#words").html(null);
-				for ( var chat of data) {
-					var str = "";
-					if(chat.sender==[[${session.user.username}]]){
-						str = '<div class="btalk"><span>' + chat.content
-						+ '</span></div>';
+		var newCount=$("#newCount").text()-$("#"+username).children().eq(1).text();
+		if(newCount>0)
+			$("#newCount").html(newCount);
+		else
+			$("#newCount").html("");
+		$("#"+username).children().eq(1).html("0");
+		if($("#_onclick").val()!=username){
+			$.ajax({
+				type : 'post',
+				url : '/chat/get',
+				data : {
+					username : username
+				},
+				success : function(data) {
+					$("#words").html(null);
+					for ( var chat of data) {
+						var str = "";
+						if(chat.sender==[[${session.user?.username}]]){
+							str = '<div class="btalk"><span>' + chat.content
+							+ '</span></div>';
+						}
+						else{
+							str = '<div class="atalk"><span>' + chat.content
+							+ '</span></div>';
+						}
+						$("#words").html($("#words").html()+str);
 					}
-					else{
-						str = '<div class="atalk"><span>' + chat.content
-						+ '</span></div>';
-					}
-					$("#words").html($("#words").html()+str);
 				}
-			}
-		});
+				
+			});
+			
+			$.ajax({
+				type : 'post',
+				url : '/chat/hasRead',
+				data : {
+					username : username
+				},
+				success : function(data) {
+					
+				}
+				
+			});
+			
+			
+		}
+			
+		$("#_onclick").val(username);
 	}
 </script>
 </html>

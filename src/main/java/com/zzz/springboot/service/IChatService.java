@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.zzz.springboot.entity.Chat;
+import com.zzz.springboot.entity.NewInfo;
 
 /**
  * <p>Title: IChatService</p>
@@ -18,5 +19,9 @@ public interface IChatService {
 
 	List<String> selectContact(String username) throws Exception;
 
+	List<NewInfo> selectNewInfos(String username) throws Exception;
 	void add(Chat chat) throws Exception;
+
+	void hasRead(String from, String to) throws Exception;
+
 }

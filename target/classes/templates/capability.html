@@ -1,64 +1,34 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+<script src="/js/jquery-3.3.1.min.js"></script>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>技能</title>
 <style>
 *{
 	padding: 0;
 	margin: 0;
-	border: none;
 }
-a{
-		text-decoration: none;
-		color: #FFC1C1;
-		font-size:12px;
-}
-th{
-   font-weight: normal;
-}
-	/* Border styles */
-.href{
-	font-size:14px;
-}
-.table-3 thead, #table-3 tr {
-border-top-width: 1px;
-border-top-style: solid;
-border-top-color: rgb(235, 242, 224);
-}
-.table-3 {
-border-bottom-width: 1px;
-border-bottom-style: solid;
-border-bottom-color: rgb(235, 242, 224);
-color: #ccc;
-}
-/* Padding and font style */
-.table-3 td, #table-3 th {
-width:300px;
-height:50px;
-padding: 5px 10px;
-font-size: 14px;
-color: rgb(149, 170, 109);
-}
+.bg{width:100%;height:100vh;position:absolute;z-index:-2}.bg-img{width:100%;height:100%;background:url("../../img/login/bg.jpg") no-repeat center center;-webkit-background-size:cover;background-size:cover} 
 
-/* Alternating background colors */
-.table-3 tr:nth-child(even) {
-background: rgb(230, 238, 214)
-}
-.table-3 tr:nth-child(odd) {
-background: #FFF
-}
-.main {
-	width: 200px;
-	text-align: center;
-	margin: 20px auto;
-}
-.hint{
-	text-align: center;
-	margin: 20px auto;
-	color: #ccc;
-}
 
+.fixed {opacity:.98;z-index:6;width:627px;height:445px;position:absolute;left:50%;top:50%;margin-left:-313.5px;margin-top:-225px;background-color:#fff;border-radius:20px;}
+.center{
+	width:80%;
+	background:#fff;
+	margin: 20px auto;
+	border-radius: 10px;
+	color: #666;
+	font-size:13px;
+}
+.modify{
+	display: block;
+	margin: 0 auto;
+}
 </style>
 <script type="text/javascript">
 	function deleteOne(id) {
@@ -70,61 +40,92 @@ background: #FFF
 </script>
 </head>
 <body>
-	<div th:replace="head::head"></div>
-	<div th:switch="${capabilities.size()==0 }" th:remove="tag">
-		<div th:case="true" class="hint">当前用户还没有发布技能</div>
-		<div th:case="false" th:remove="tag">
-			<div th:switch="${capabilities[0].username==session.user?.username}" th:remove="tag" >
-			<div class="main">
-				<div th:case="true" th:remove="tag">
-					<table class="table-3">
-						<tr>
-							<th>语言</th>
-							<th>等级</th>
-							<th>操作</th>
-						</tr>
-						<div th:each="capability:${capabilities }" th:remove="tag">
-							<form th:id="|${capability.username}${capability.language}|"
-								th:action="@{/capability/deleteOne/{username}/{language}(username=${capability.username},language=${capability.language})}"
-								method="post"></form>
-							<tr>
-								<td th:text="${capability.language }"></td>
-								<td th:text="${capability.level }"></td>
-								<td>
-									<a href="javascript:;"
-										th:onclick="|deleteOne('${capability.username}${capability.language}');|" class="herf">删除</a>
-								</td>
-							</tr>
+	
+	<div class="bg">
+	    <div class="bg-img">
+	    <div th:replace="head::head" class="header" style=""></div>
+	    	<div class="fixed">
+				    <div th:switch="${capabilities.size()==0 }" th:remove="tag">
+					<div th:case="true" class="hint">
+					当前用户还没有发布技能
+						<div th:if="${session.user?.username == selectUsername }">
+										<td class="herf">
+											<a class="btn btn-default btn-xs" href="javascript:;" onclick="deleteAll();">删除全部技能</a>
+										</td>
+										<td>
+												<a class="btn btn-default btn-xs" href="/demo/chooseCapability">修改技能</a>
+										</td>
 						</div>
-						<form id="_deleteAll" th:action="@{/capability/deleteAll/{username}(username=${session.user?.username})}"
-							method="post"></form>
-						<tr>
-							<td class="herf">
-								<a href="javascript:;" onclick="deleteAll();">删除全部技能</a>
-							</td>
-							<td></td>
-							<td></td>
-						</tr>
-					</table>
-				</div>
-				<div th:case="false" th:remove="tag">
-					<table class="table-3">
-						<tr>
-							<th>语言</th>
-							<th>等级</th>
-						</tr>
-						<div th:each="capability:${capabilities }" th:remove="tag">
-							<tr>
-								<td th:text="${capability.language }"></td>
-								<td th:text="${capability.level }"></td>
-							</tr>
+					</div>
+					<div th:case="false" th:remove="tag">
+						<div th:switch="${capabilities[0].username==session.user?.username}" th:remove="tag" >
+						<div class="main">
+							<div th:case="true" th:remove="tag">
+							<div class="center">
+							
+								<table class="table table-striped">
+									<tr>
+										<th>语言</th>
+										<th>等级</th>
+										<th>操作</th>
+									</tr>
+									<div th:each="capability:${capabilities }" th:remove="tag">
+										<form th:id="|${capability.username}${capability.language}|"
+											th:action="@{/capability/deleteOne/{username}/{language}(username=${capability.username},language=${capability.language})}"
+											method="post"></form>
+										<tr>
+											<td th:text="${capability.language }"></td>
+											<td th:text="${capability.level }"></td>
+											<td>
+												<a  href="javascript:;"
+													th:onclick="|deleteOne('${capability.username}${capability.language}');|" class="herf btn btn-default btn-xs">删除</a>
+											</td>
+										</tr>
+									</div>
+									<form id="_deleteAll" th:action="@{/capability/deleteAll/{username}(username=${session.user?.username})}"
+										method="post"></form>
+									<tr>
+									<div th:if="${session.user?.username == selectUsername }">
+										<td class="herf">
+											<a class="btn btn-default btn-xs" href="javascript:;" onclick="deleteAll();">删除全部技能</a>
+										</td>
+										<td>
+												<a class="btn btn-default btn-xs" href="/demo/chooseCapability">修改技能</a>
+										</td>
+									</div>
+										<td></td>
+									</tr>
+								</table>
+								
+								</div>
+							</div>
+							<div th:case="false" th:remove="tag">
+							<div class="center">
+								<table class="table table-striped">
+									<tr>
+										<th>语言</th>
+										<th>等级</th>
+									</tr>
+									<div th:each="capability:${capabilities }" th:remove="tag">
+										<tr>
+											<td th:text="${capability.language }"></td>
+											<td th:text="${capability.level }"></td>
+										</tr>
+									</div>
+								</table>
+							</div>
+							<div class="modify"><a  href="javascript:;" onclick=""></a></div>
+							</div>
 						</div>
-					</table>
-					<a href="javascript:;" onclick=""></a>
+						</div>
+					</div>
 				</div>
-			</div>
-			</div>
-		</div>
-	</div>
+				
+		
+	    	</div>
+	    		
+	    </div>
+  	</div>
+	
 </body>
 </html>

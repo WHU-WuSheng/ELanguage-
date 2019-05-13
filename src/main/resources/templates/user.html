@@ -2,7 +2,202 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title th:text="|${selectUser!=null?selectUser?.username+'的主页':'error'}|"></title>
+<script type="text/javascript" src="/js/jquery-3.3.1.min.js"></script>
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css"
+	integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+	crossorigin="anonymous">
+<script
+	src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"
+	integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+	crossorigin="anonymous"></script>
+<title
+	th:text="|${selectUser!=null?selectUser?.username+'的主页':'error'}|"></title>
+
+<script type="text/javascript" src="/js/user.js"></script>
+<style>
+input[type="text"]{
+	border:none !important;
+	color:#666  !important;
+	background-color:rgba(0,0,0,0) !important;
+}
+textarea{
+	border:none !important;
+	background-color:rgba(0,0,0,0) !important;
+}
+select{
+	border:none !important;
+	font-size:12px;
+	background-color:rgba(0,0,0,0) !important;
+}
+#userInfo {
+	width: 50%;
+	margin: 20px auto;
+	color: #666;
+	font-size: 13px;
+}
+
+.options {
+	width: 50%;
+	margin: 20px auto;
+	text-align: center;
+	font-size:12px !important;
+}
+
+.option {
+	margin: 0 10px;
+	font-size: 12px !important;
+	color: #666;
+	border: 1px solid #ccc !important;
+}
+
+.bg{width:100%;height:100vh;position:fixed;z-index:-2}.bg-img{width:100%;height:100%;background:url("../../img/login/bg.jpg") no-repeat center center;-webkit-background-size:cover;background-size:cover} 
+
+.changeImg{
+	margin: 30px auto;
+	
+}
+.file{
+width:200px !important;
+color:#666 !important;
+font-size:13px !important;
+border: 1px solid #ccc !important;
+}
+.modifyImg{
+	border: 1px solid #ccc !important
+}
+.remark{
+	text-align: center;
+	margin-top:
+}
+</style>
+</head>
+<body>
+<div class="bg">
+<div class="bg-img">
+</div>
+</div>
+	<div th:replace="head::head"></div>
+	<div th:switch="${selectUser==null}" th:remove="tag">
+		<div th:case="true">该用户不存在</div>
+		<div th:case="false" th:remove="tag" id="wrapper">
+			
+			<table class="table" id="userInfo">
+				<tr>
+					<td>用户名</td>
+					<td id="username" th:text="${selectUser?.username}"></td>
+				</tr>
+				<div th:if="${session.user?.username == selectUser?.username }" th:remove="tag">
+					<tr>
+						<td>手机号</td>
+						<td><input type="text" th:value="${selectUser?.phone}"
+							id="phone"></td>
+					</tr>
+					<tr>
+						<td>邮箱</td>
+						<td><input type="text" th:value="${selectUser?.email}"
+							id="email"></td>
+					</tr>
+					<tr>
+						<td>余额</td>
+						<td>
+						<text th:text="${selectUser?.money}" ></text>
+						&nbsp;&nbsp;
+						<input class="btn btn-default btn-xs option" id="recharge"
+							type="button" value="充 值">
+						</td>
+					</tr>
+					
+					
+					
+					
+					<div id ="rechargeMargin" style="display:none;position:absolute;">
+						<div><span>充值金额: </span><span><input id="rechargeCount"></span></div>
+						<div><span>支付方式: </span><span><input type="button" value="支付宝"><input type="button" value="微信"></span></div>
+						<div><input type="button" value="确认充值" id="rechargeConfirm"></div>
+					</div>
+				</div>
+				<tr>
+					<td>性别</td>
+					<td><select id="sex">
+							<option value="男" th:selected="${selectUser?.sex=='男'}">男</option>
+							<option value="女" th:selected="${selectUser?.sex=='女'}">女</option>
+					</select></td>
+				</tr>
+				<tr>
+					<td>年龄</td>
+					<td><input type="text" th:value="${selectUser?.age}" id="age">
+					</td>
+				</tr>
+				<tr>
+					<td>积分</td>
+					<td th:text="${selectUser?.credit }"></td>
+				</tr>
+				<tr>
+					<td>个人简介</td>
+					<td><textarea type="text" th:text="${selectUser?.profile}"
+							id="profile"></textarea></td>
+				</tr>
+			</table>
+			<form id="showCapability"
+				th:action="@{/capability/show/{username}(username=${selectUser?.username })}"
+				method="post"></form>
+			<form id="showStudy"
+				th:action="@{/record/showStudy/{username}(username=${selectUser?.username })}"
+				method="post"></form>
+			<form id="showTeach"
+				th:action="@{/record/showTeach/{username}(username=${selectUser?.username })}"
+				method="post"></form>
+			<div th:switch="${session.user?.username == selectUser?.username }" th:remove="tag">
+				<div th:case="true" th:remove="tag">
+					<div class="options" id="option">
+						<div class="btn btn-default option" href="javascript:;"
+							onclick="showCapability();">查看我发布的技能</div>
+						<div class="btn btn-default option" href="javascript:;"
+							onclick="showStudy();">查看我的学习记录</div>
+						<div class="btn btn-default option" href="javascript:;"
+							onclick="showTeach();">查看我的教学记录</div>
+						<input class="btn btn-default option" id="modifyUserInfo"
+							type="button" value="修改个人信息">
+			<div class="changeImg">
+				<form enctype="multipart/form-data" action="/user/changeImage" method="post">
+					<img alt="无头像" th:src="@{../../img/pic/{username}.png(username=${session?.user.username})}" height="200px" width="200px" id="image" >
+					<input type="file" name="pic" id="imageButton" accept="image/jpeg,image/jpg,image/png" class="form-control file">
+					<input type="submit" value="确认修改图片" class="btn btn-default btn-xs modifyImg">
+				</form>
+			</div>
+					</div>
+				</div>
+				<div th:case="false" th:remove="tag">
+					<div class="options" id="option">
+
+						<div class="btn btn-default option" href="javascript:;"
+							onclick="showCapability();"
+							th:text="|查看${selectUser?.sex=='男'?'他':'她'}发布的技能|"></div>
+						<input class="btn btn-default option" id="learnApply"
+							type="button" value="申请学习">
+						<div id="applyStyle">
+							<span id="applyResult"></span>
+						</div>
+						
+						
+					
+						
+						
+					</div>
+				</div>
+				<div class="remark">
+          		<input class="btn btn-default option" id="showRemark"
+							type="button" value="查看评价">
+								<div id="remarks"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	
+	
+</body>
 <script type="text/javascript">
 	function showCapability() {
 		$("#showCapability").submit();
@@ -13,78 +208,19 @@
 	function showTeach() {
 		$("#showTeach").submit();
 	}
+	/* $('input').click(
+			$('input').css({
+				border:"1px solid #666"
+			})
+		
+	)
+	$("input").blur(function() {
+			$("input").css({
+				outline:"none",
+				border:"none"
+			})
+		}
+	) */
+	
 </script>
-<script type="text/javascript" src="/js/jquery-3.3.1.min.js"></script>
-<script type="text/javascript" src="/js/user.js"></script>
-</head>
-<body>
-	<div th:replace="head::head"></div>
-	<div th:switch="${selectUser==null}" th:remove="tag">
-		<div th:case="true">该用户不存在</div>
-		<div th:case="false" th:remove="tag">
-			<table border="1" id="userInfo">
-				<tr>
-					<td>用户名</td>
-					<td th:text="${selectUser?.username }"></td>
-				</tr>
-				<div th:if="${session.user == selectUser }" th:remove="tag">
-					<tr>
-						<td>手机号</td>
-						<td th:text="${selectUser?.phone}"></td>
-					</tr>
-					<tr>
-						<td>邮箱</td>
-						<td th:text="${selectUser?.email}"></td>
-					</tr>
-					<tr>
-						<td>余额</td>
-						<td th:text="${selectUser?.money}"></td>
-					</tr>
-				</div>
-				<tr>
-					<td>性别</td>
-					<td th:text="${selectUser?.sex }"></td>
-				</tr>
-				<tr>
-					<td>年龄</td>
-					<td th:text="${selectUser?.age }"></td>
-				</tr>
-				<tr>
-					<td>积分</td>
-					<td th:text="${selectUser?.credit }"></td>
-				</tr>
-				<tr>
-					<td>个人简介</td>
-					<td th:text="${selectUser?.profile }"></td>
-				</tr>
-			</table>
-			<form id="showCapability"
-				th:action="@{/capability/show/{username}(username=${selectUser?.username })}" method="post"></form>
-			<form id="showStudy"
-				th:action="@{/record/showStudy/{username}(username=${selectUser?.username })}" method="post"></form>
-			<form id="showTeach"
-				th:action="@{/record/showTeach/{username}(username=${selectUser?.username })}" method="post"></form>
-			<div th:switch="${session.user == selectUser }" th:remove="tag">
-				<div th:case="true" th:remove="tag">
-					<a href="javascript:;" onclick="showCapability();">查看我发布的技能</a> <a href="javascript:;"
-						onclick="showStudy();">查看我的学习记录</a> <a href="javascript:;" onclick="showTeach();">查看我的教学记录</a>
-				</div>
-				<div th:case="false" th:remove="tag">
-					<a th:href="@{/chat/show?username={username}(username=${selectUser?.username})}"
-						th:text="|与${selectUser?.sex=='男'?'他':'她'}聊天|"></a> <a href="javascript:;"
-						onclick="showCapability();" th:text="|查看${selectUser?.sex=='男'?'他':'她'}发布的技能|"></a>
-						<input id="learnApply" type="button" value="申请学习">
-						<div id="applyStyle"></div>
-						<div id="applyResult"></div>
-				</div>
-				
-				
-				
-			</div>
-		</div>
-	</div>
-	
-	
-	
-</body>
 </html>

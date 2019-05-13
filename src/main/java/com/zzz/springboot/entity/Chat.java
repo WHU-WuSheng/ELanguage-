@@ -32,8 +32,10 @@ public class Chat {
 	private String content;
 	@NonNull
 	private Integer onlineCount;
+	@NonNull
+	private Integer state;
 
-	public static String jsonStr(String sender, String receiver, Timestamp time, String content, Integer onlineCount) {
-		return JSON.toJSONString(new Chat(sender, receiver, time, content, onlineCount));
+	public static String jsonStr(String sender, String receiver, Timestamp time, String content, Integer onlineCount,Integer state) {
+		return JSON.toJSONString(new Chat(sender, receiver, time, content, onlineCount,state));
 	}
 }

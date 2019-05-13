@@ -10,14 +10,17 @@
 	
 </style>
 <body>
+
+	<div th:replace="head::head"></div>
+	
 	老师：
-	<text id="teacher" th:text="${record.teacher}" />
+	<text id="teacher" th:text="${record.teacher}"/>
 	<br> 学生：
-	<text id="student" th:text="${record.student}" />
+	<text id="student" th:text="${record.student}"/>
 	<br> 语言：
 	<text id="language" th:text="${record.language}" />
 	<br> 申请时间：
-	<text id="applyTime" th:text="${record.applyTime}" />
+	<text id="applyTime" th:text="${record.applyTime}"/>
 	<br> 开始时间：
 	<text id="startTime" th:text="${record.startTime}" />
 	<br> 结束时间：
@@ -30,12 +33,33 @@
 	<div th:if="${record.state==0 && session.user.username==record.teacher}">
 		<select id="state">
 				<option value="1">同意</option>
-				<option value="5">拒绝</option>
+				<option value="4">拒绝</option>
 		</select>
 		<input id="solve" type="button" value="处理">
 	</div>
 	
+	<div th:if="${record.state==0 && session.user.username==record.student}">
+		<input id="cancel0" type="button" value="取消订单" > 
+	</div>
 	
+	<div th:if="${record.state==1 && session.user.username==record.student}">
+		<input id="cancel1" type="button" value="取消教学（会收取百分之10违约金）" > 
+	</div>
+	
+	
+	<div th:if="${(record.state!=0 && record.state!=1 ) && session.user.username==record.student}">
+		
+		<form enctype="multipart/form-data" action="/record/refundApply" method="post">
+		<div><span>请输入你的退款理由</span><span><input type="text" name="reason"></span></div>
+		<div><span>退款材料</span><input type="file" name="file"></div>
+		<div>
+			<input th:value="${record.teacher}" name="teacher" hidden="true">
+			<input th:value="${record.student}" name="student" hidden="true">
+			<input th:value="${record.applyTime}" name="applyTime" hidden="true">
+		</div>
+		<input type="submit" value="申请退款" >
+		 </form>
+	</div>
 	
 	<div th:if="${record.state==3}">
 		<div th:if="${record.remark!=null}">
@@ -54,8 +78,6 @@
 				<option>4</option>
 			</select> <br> <input id="remark" type="button" value="提交评价"><br>
 		</div>
-		<input type="text" id="refundReason" placeholder="请输入你申请退款的理由">
-		<input id="refund" type="button" value="申请退款">
 	</div>
 	
 

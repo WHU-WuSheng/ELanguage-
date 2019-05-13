@@ -43,7 +43,10 @@ public class CapabilityController {
 			throws Exception {
 		modelMap.put("capabilities", iCapabilityService.selectCapabilityByUsername(username));
 		if(type == null)
+		{
+			modelMap.put("selectUsername",username);
 			return "capability";
+		}
 		else
 			return "userComponent/learnApply";
 	}

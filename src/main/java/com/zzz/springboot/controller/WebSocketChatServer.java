@@ -1,10 +1,15 @@
 package com.zzz.springboot.controller;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.sql.Timestamp;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import javax.servlet.http.HttpSession;
+import javax.websocket.EndpointConfig;
 import javax.websocket.OnClose;
 import javax.websocket.OnError;
 import javax.websocket.OnMessage;
@@ -18,6 +23,8 @@ import org.springframework.stereotype.Component;
 
 import com.alibaba.fastjson.JSON;
 import com.zzz.springboot.entity.Chat;
+import com.zzz.springboot.entity.User;
+import com.zzz.springboot.sensitivefilter.SensitiveFilter;
 import com.zzz.springboot.service.IChatService;
 
 /**
@@ -32,6 +39,13 @@ import com.zzz.springboot.service.IChatService;
 public class WebSocketChatServer {
 	//  这里使用静态，让 service 属于类
 	private static IChatService iChatService;
+	SensitiveFilter sensitiveFilter = new SensitiveFilter(new
+			BufferedReader(new InputStreamReader(
+					  ClassLoader.getSystemResourceAsStream("sensi_words.txt") ,
+					  StandardCharsets.UTF_8)));
+	
+//	private static SensitiveFilter sensitiveFilter;
+	
 
 	// 注入的时候，给类的 service 注入
 	@Autowired
@@ -39,6 +53,14 @@ public class WebSocketChatServer {
 		WebSocketChatServer.iChatService = iChatService;
 	}
 
+	
+	/*
+	 * @Autowired public void setSensitiveFilter(SensitiveFilter sensitiveFilter) {
+	 * WebSocketChatServer.sensitiveFilter = new SensitiveFilter(new
+	 * BufferedReader(new InputStreamReader(
+	 * ClassLoader.getSystemResourceAsStream("sensi_words.txt") ,
+	 * StandardCharsets.UTF_8))); }
+	 */
 	/**
 	 * 全部在线会话  PS: 基于场景考虑 这里使用线程安全的Map存储会话对象。
 	 */
@@ -61,14 +83,28 @@ public class WebSocketChatServer {
 	 */
 	@OnMessage
 	public void onMessage(Session session, String jsonStr) throws Exception {
+		
+		
+		
+		
+		
+		
+		
+
 		Chat chat = JSON.parseObject(jsonStr, Chat.class);
+		
+		String filted = sensitiveFilter.filter(chat.getContent(), '*');
+		
+		
+		chat.setContent(filted);
 		iChatService.add(new Chat(chat.getSender(), chat.getReceiver(), new Timestamp(System.currentTimeMillis()),
-				chat.getContent(), 0));
+				chat.getContent(), 0,1));
+		
 		sendMessageToOne(chat.getSender(), Chat.jsonStr(chat.getSender(), chat.getReceiver(),
-				new Timestamp(System.currentTimeMillis()), chat.getContent(), onlineSessions.size()));
+				new Timestamp(System.currentTimeMillis()), chat.getContent(), onlineSessions.size(),1));
 		if (onlineSessions.get(chat.getReceiver()) != null)
 			sendMessageToOne(chat.getReceiver(), Chat.jsonStr(chat.getSender(), chat.getReceiver(),
-					new Timestamp(System.currentTimeMillis()), chat.getContent(), onlineSessions.size()));
+					new Timestamp(System.currentTimeMillis()), chat.getContent(), onlineSessions.size(),1));
 	}
 
 	/**
@@ -109,6 +145,7 @@ public class WebSocketChatServer {
 		onlineSessions.forEach((id, session) -> {
 			if (id.equals(username)) {
 				try {
+//					session.
 					session.getBasicRemote().sendText(chat);
 				} catch (IOException e) {
 					e.printStackTrace();

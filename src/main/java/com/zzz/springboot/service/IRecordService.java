@@ -24,5 +24,9 @@ public interface IRecordService {
 	void add(Record record) throws Exception;
 
 	void modify(Record record) throws Exception;
+	
+	List<Record> selectReadyUpdateRecord(String username) throws Exception;
+	
+	List<Record> selectRecordByStudent(String username) throws Exception;
 
 }

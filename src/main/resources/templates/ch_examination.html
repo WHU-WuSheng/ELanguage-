@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta charset="UTF-8">
+        <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <link rel="shortcut icon" href="http://tinycat.oss-cn-beijing.aliyuncs.com/Rabbit_02.ico" type="image/x-icon">
+        <title th:text="${subject} + 考试"></title>
+    <style>
+        body {
+            font-size: 30px;
+        }
+        p {
+            margin-top: 20px;
+        }
+        .btn-group{
+        margin: 10px 0;
+        }
+    </style>
+    </head>
+    <body background="/bj.png">
+    	    <div th:replace="head::head" class="header" style=""></div>
+    
+   		 
+        <div class="container" >
+            <h1 th:text="${subject}"></h1><small><!-- <a href="/demo/chooseCapability" class="btn btn-default btn-xs">返回</a> --></small>
+        </div>
+        <div class="container">
+            <ol>
+            </ol>
+        </div>
+
+	<input id="username" th:value=@{${session.user.username}} hidden="true">
+    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="/js/chinese_script.js"></script>
+    </body>
+</html>

@@ -44,4 +44,12 @@ public interface IRecordMapper {
 			+ "		%H:%T:%s')=DATE_FORMAT(#{applyTime}, '%Y-%m-%d\r\n" + "		%H:%T:%s')")
 	Record selectSingleRecord(@Param("teacher") String teacher, @Param("student") String student,
 			@Param("applyTime") Date applyTime) throws Exception;
+	
+	
+	
+	@Select("select * from record where ( teacher=#{username} or student=#{username} ) and (state=1 or state=2)")
+	List<Record> selectReadyUpdateRecord(@Param("username") String username) throws Exception;
+	
+	@Select("select * from record where student=#{username}")
+	List<Record> selectRecordByStudent(@Param("username") String username) throws Exception;
 }

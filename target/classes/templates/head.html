@@ -7,7 +7,12 @@
 <link rel="stylesheet" type="text/css" href="/css/main.css">
 <link rel="stylesheet" href="/css/font-awesome.min.css">
 <script src="/js/jquery-3.3.1.min.js"></script>
+<script src="/js/header.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 <script type="text/javascript">
+	
+	
 	function show() {
 		$("#show").submit();
 	}
@@ -16,51 +21,177 @@
 		 	webSocket.close();
 		$("#logout").submit();
 	}
+	function getNewCount(){
+		$.ajax({
+			type : 'get',
+			url : '/chat/getNewCount',
+			success : function(data) {
+				console.log(data);
+				if(data>0){
+					$("#newCount").html(data);
+				}else{
+					$("#newCount").html("");
+				}
+			}
+		});
+	}
+	
+	
+	function getCalling(sender){
+		/* var node = document.createElement('div');
+		var body = document.getElementByTagName('body');
+		body.appendChild(node); */
+		$('.title').text(sender);
+		$('.mask').css({
+			display:'block'
+		})
+		/* $div. */
+	}
+	function rejectCalling(sender){
+		/* var node = document.createElement('div');
+		var body = document.getElementByTagName('body');
+		body.appendChild(node); */
+		alert(sender+"拒绝通话");
+		/* $div. */
+	}
+	function acceptCalling(me,other){
+		window.open ( 'http://192.168.123.70:5080/VideoPro/info/VideoPro.html#a='+me+"&b="+other); 
+	}
+	
+	
+	function toAccept(){
+		webSocket.send(JSON.stringify({
+			sender : [[${session.user?.username}]],
+			receiver : $('.title').html(),
+			content : "acceptCalling..."
+		})); 
+		
+		
+		window.open ('http://192.168.123.70:5080/VideoPro/info/VideoPro.html#a='+[[${session.user?.username}]]+"&b="+$('.title').html()); 
+		$('.mask').css({
+			display:'none'
+		})
+	}
+	
+	function toReject(){
+		webSocket.send(JSON.stringify({
+			sender : [[${session.user?.username}]],
+			receiver : $('.title').html(),
+			content : "rejectCalling..."
+		}));
+		
+		$('.mask').css({
+			display:'none'
+		}) 
+	}
+	
+	var webSocket;
+	 if([[${session.user!=null}]]){
+		 webSocket = new WebSocket('ws://192.168.123.140:80/chat/'+[[${session.user?.username}]]);
+		 /**
+			 * 当服务端打开连接
+			 */
+			webSocket.onopen = function(event) {
+				console.log('WebSocket打开连接');
+			};
+			/**
+			 * 关闭连接
+			 */
+			webSocket.onclose = function(event) {
+				console.log('WebSocket关闭连接');
+			};
+			/**
+			 * 通信失败
+			 */
+			webSocket.onerror = function(event) {
+				console.log('WebSocket发生异常');
+			};
+			
+			webSocket.onmessage = function(event) {
+				console.log("getinfo");
+				getNewCount();
+				//获取服务端消息
+				var chat = JSON.parse(event.data) || {};
+				var str;
+				if(chat.receiver==[[${session.user?.username}]]){
+					if(chat.content=='makeCalling...'){
+						getCalling(chat.sender);
+					}else if(chat.content=='rejectCalling...'){
+						rejectCalling(chat.sender);
+					}else if(chat.content=="acceptCalling..."){
+						acceptCalling(chat.receiver,chat.sender);
+					}
+					
+					
+				}
+				
+			}
+			
+	 }
+	
+
 </script>
 </head>
 <body>
+	<div class="mask">
+		<div>
+			<span class="title"></span>
+			<span>发起通话</span>
+		</div>
+		<input type ="button" onclick="toAccept()" value="同意"></input>
+		<input type ="button" onclick="toReject()" value="拒绝"></input>
+	</div>
 	<div class="header">
 		<div class="nav-bar flex-left">
 			<nav>
 				<a href="/">首页</a>
 			</nav>
 			<nav>
-			胡昱松
+			简介
 			</nav>
+			<nav>
+		  	 学习
+			</nav>
+			<nav>目录</nav>
+			<nav>成绩</nav>
+		</div>
 		
-		</div>
-		<div class="header-logo">
-			<img src="http://placekitten.com/200/40" alt="logo">
-		</div>
 
 		<div class="flex-right">
-			<!--<div class="header-search">-->
-			<form action="/user/selectUserByLanguage"> 
-				<input id="search" type="text" name="language" placeholder="查询课程">
-				<input type="submit" value="查询" >
-			</form>
-			
-			<!--<i class="fa fa-search" aria-hidden="true"></i>-->
-			<!--</div>-->
+			<div class="header-search">
+				<form action="/user/selectUserByLanguage"> 
+					<div class="form-group"><input id="search" type="text" name="language" placeholder="查询课程" class="form-control"></div>
+					<div class="form-group"><input type="submit" value="查询" id="submit" class="form-control"></div>
+				</form>
+			</div>
 			<div class="header-list">
 				<div th:switch="${session.user==null }" th:remove="tag">
 					<div th:case="true" th:remove="tag">
-						<span>|</span> <span><a
+						<span><a
 							th:href="@{/login?url={url}(url=${#httpServletRequest.requestURI})}">登录</a></span> <span></span> <span><a
 							href="/register">注册</a></span>
-						<!-- <span>|</span> -->
 					</div>
 					<div th:case="false" th:remove="tag">
-						<form id="show" th:action="@{/user/show/{username}(username=${session.user.username})}"
+						<form id="show" th:action="@{/user/show/{username}(username=${session.user?.username})}"
 							method="post"></form>
 						<form id="logout" action="/user/logout" method="post"></form>
-						<span>|</span> <span><a href="javascript:;" onclick="show();"
-							th:text="|${session.user.username }|"> </a></span> <span></span> <span><a href="javascript:;"
+						<span><a href="javascript:;" onclick="show();"
+							th:text="|${session.user?.username }|"> </a></span> <span></span> <span><a href="javascript:;"
 							onclick="logout();">退出</a></span>
-						<!-- <span>|</span> -->
+						<span id="info">
+							<span><a href="/chat/show">新消息 </a></span>
+							<span th:switch="${session.newCount>0}">
+								<span th:case="true">
+									<span id="newCount" >[[${session.newCount}]]</span>
+								</span>
+								<span th:case="false">
+									<span id="newCount"></span>
+								</span>
+							</span>
+						</span>
 					</div>
 				</div>
-				<span></span> <span><a href="/chat/show">聊天</a></span> <span>|</span>
+				
 			</div>
 		</div>
 		<div class="box-shadow"></div>
@@ -73,28 +204,7 @@
 		 * 1、WebSocket客户端通过回调函数来接收服务端消息。例如：webSocket.onmessage
 		 * 2、WebSocket客户端通过send方法来发送消息给服务端。例如：webSocket.send();
 		 */
-		 var webSocket;
-		 if([[${session.user!=null}]]){
-			 webSocket = new WebSocket('ws://localhost:80/chat/'+[[${session.user?.username}]]);
-			 /**
-				 * 当服务端打开连接
-				 */
-				webSocket.onopen = function(event) {
-					console.log('WebSocket打开连接');
-				};
-				/**
-				 * 关闭连接
-				 */
-				webSocket.onclose = function(event) {
-					console.log('WebSocket关闭连接');
-				};
-				/**
-				 * 通信失败
-				 */
-				webSocket.onerror = function(event) {
-					console.log('WebSocket发生异常');
-				};
-		 }
+		 
 	</script>
 </body>
 </html>

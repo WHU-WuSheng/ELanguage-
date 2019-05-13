@@ -3,83 +3,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>首页</title>
-<link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-<style>
-	.table{
-		width: 80%;
-		margin: 30px auto;
-	}
-	.progress {
-		height: 2px;
-	}
-</style>
+<script src="/js/jquery-3.3.1.min.js"></script>
 
-</head>
-<body>
-	<div th:replace="head::head"></div>
-	<div class="banner">
-		<div class="banner-slide">
-			<div class="gradient"></div>
-			<div class="banner-img bg1"></div>
-			<div class="banner-img bg2"></div>
-			<div class="banner-img bg3"></div>
-			<div class="banner-img bg4"></div>
-			<div class="banner-img bg5"></div>
-		</div>
-		<div class="change-lines">
-			<div class="change-line">
-				<div class="progress"></div>
-			</div>
-			<div class="change-line">
-				<div class="progress"></div>
-			</div>
-			<div class="change-line">
-				<div class="progress"></div>
-			</div>
-			<div class="change-line">
-				<div class="progress"></div>
-			</div>
-			<div class="change-line change-line-on">
-				<div class="progress"></div>
-			</div>
-		</div>
-		<div class="arrow arrow-left"></div>
-		<div class="arrow arrow-right"></div>
-	</div>
-	<div class="recommend">
-		<div class="recommend-banner">
-			<div class="rec-title">名师推荐</div>
-			<div class="rec-bottom-line"></div>
-		</div>
-	
-	</div>
-	<table class="table table-hover">
-		<tr>
-			<th>用户名</th>
-			<th>积分</th>
-		</tr>
-	<div th:each="user:${users}" th:remove="tag">
-		<tr>
-			<td><a href="javascript:;" th:onclick="|showOther('${user.username}');|"
-				th:text="${user.username}"> </a></td>
-			<td th:text="${user.credit}"></td>
-		</tr>
-	</div>
-	</table>
-	<div th:each="user:${users}" th:remove="tag">
-		<form th:id="${user.username}" th:action="@{/user/show/{username}(username=${user.username})}"
-			method="post"></form>
-	</div>
-	<!-- 文件下载 -->
-	<!-- <form id="_download" method="post">
-		<input id="_filename" type="text" name="filename"> <input type="submit" value="下载"
-			onclick="download();">
-	</form> -->
-</body>
-<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-<script src="https://cdn.bootcss.com/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-<script src="https://cdn.bootcss.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-<script src="/js/banner-slide.js"></script>
 <script type="text/javascript">
 	function showOther(id) {
 		$("#" + id).submit();
@@ -94,4 +19,245 @@
 		$("#_download").submit();
 	}
 </script>
+
+<style>
+	
+.banner {
+  height: 421px;
+  width: 100%;
+  position: relative;
+  overflow: hidden; }
+  .banner .gradient {
+    position: absolute;
+    width: 40%;
+    height: 421px;
+    z-index: 2;
+    background: linear-gradient(to left, transparent 20%, rgba(0, 0, 0, 0.5) 100%); }
+  .banner-img {
+    height: 421px;
+    width: 100%;
+    position: absolute;
+    display: block; }
+  .banner .bg1 {
+    background: url(../img/1.jpeg) no-repeat center center;
+    z-index: 3; }
+  .banner .bg2 {
+    background: url(../img/2.jpeg) no-repeat center center; }
+  .banner .bg3 {
+    background: url(../img/3.jpeg) no-repeat center center; }
+  .banner .bg4 {
+    background: url(../img/4.jpeg) no-repeat center center; }
+  .banner .bg5 {
+    background: url(../img/5.jpeg) no-repeat center center; }
+  .banner .change-lines {
+    position: absolute;
+    bottom: 40px;
+    left: 100px;
+    z-index: 7; }
+    .banner .change-lines .change-line {
+      display: inline-block;
+      width: 50px;
+      height: 2px;
+      margin-right: 3px;
+      border-radius: 2px;
+      background-color: rgba(255, 255, 255, 0.2) !important; }
+    .banner .change-lines .change-line-on .progress {
+      width: 50px;
+      height: 2px !important;
+      animation: progress-change 8s linear infinite;
+      background-color: #ffffff !important; }
+  .banner .arrow {
+    position: absolute;
+    width: 30px;
+    height: 80px;
+    top: 170.5px;
+    z-index: 8;
+    cursor: pointer; }
+    .banner .arrow-left {
+      left: 20px;
+      background: url("../img/arrow.png") no-repeat center center;
+      background-size: 20px 20px;
+      transform: rotate(180deg);
+      z-index: 8; }
+    .banner .arrow-right {
+      right: 20px;
+      background: url("../img/arrow.png") no-repeat center center;
+      background-size: 20px 20px;
+      z-index: 8; }
+
+.recommend .recommend-banner .rec-title {
+  width: 100%;
+  height: 70px;
+  margin-top: 60px;
+  font-size: 28px;
+  font-weight: 700;
+  font-stretch: expanded;
+  line-height: 70px;
+  text-align: center;
+  color: #444444; }
+.recommend .recommend-banner .rec-bottom-line {
+  width: 80px;
+  height: 3px;
+  background-color: #000;
+  margin: 0 auto; }
+.mask {
+	display:none;
+	position:fixed;
+	right:0;
+	bottom:0;
+	width:200px;
+	height:100px;
+	border-radious:5px;
+	
+}
+#progress{
+	height:2px;
+	background-color: rgba(255, 255, 255, 0.2);
+}
+.wrapper{
+ width:50%;
+ margin:0 auto;
+ 
+}
+/* <div class="info">
+		<div class="info-left">
+			<div class="left-title">项目简介</div>
+			<div class="left-content">啊u可恶的该卡英伟达拒绝吗v啊的语文课带u本来打败吴大维iu噶我饭卡舞法舞i巴克我不打被苏联给覆盖</div>
+		</div>
+		<div class="info-right">
+			<div class="mem-title">成员列表</div>
+			<div class="mem-list">张志铮</div>
+			<div class="mem-list">吴盛</div>
+			<div class="mem-list">淡唯</div>
+			<div class="mem-list">何滨</div>
+			<div class="mem-list">周景武</div>
+			<div class="mem-list">胡昱松</div>
+			<div class="mem-list">许泽松</div>
+		</div>
+	</div> */
+.info{
+	display: flex;
+	width:80%;
+	margin: 30px auto;
+	margin-bottom: 100px;
+}
+.info-left{
+	flex:0 1 400px;
+	margin:20px 50px;
+}
+.left-title{
+	text-align:center;
+	margin:20px auto;
+	font-size:20px;
+}
+.left-content{
+	margin: 40px auto;
+	text-align: center;
+	font-size: 13px;
+	color:#666;
+}
+.info-right{
+	flex:1;
+	margin:30px auto;
+}
+.mem-title{
+	text-align: center;
+	font-size:17px;
+	color:#1a2a3a;
+	margin: 30px auto;
+}
+.mem-list{
+	text-align: center;
+	margin:10px auto;
+	font-size: 13px;
+	color:#aaa;
+}
+@keyframes progress-change {
+  0% {
+    width: 0; }
+  100% {
+    width: 100%; } }
+
+	
+</style>
+</head>
+<body>
+	<div th:replace="head::head"></div>
+	<div class="banner">
+		<div class="banner-slide">
+			<div class="gradient"></div>
+			<div class="banner-img bg1"></div>
+			<div class="banner-img bg2"></div>
+			<div class="banner-img bg3"></div>
+			<div class="banner-img bg4"></div>
+			<div class="banner-img bg5"></div>
+		</div>
+		<div class="change-lines">
+			<div class="change-line">
+				<div class="progress" id="progress"></div>
+			</div>
+			<div class="change-line">
+				<div class="progress" id="progress"></div>
+			</div>
+			<div class="change-line">
+				<div class="progress" id="progress"></div>
+			</div>
+			<div class="change-line">
+				<div class="progress" id="progress"></div>
+			</div>
+			<div class="change-line change-line-on">
+				<div class="progress" id="progress"></div>
+			</div>
+		</div>
+		<div class="arrow arrow-left"></div>
+		<div class="arrow arrow-right"></div>
+	</div>
+	
+	<div class="info">
+		<div class="info-left">
+			<div class="left-title">项目简介</div>
+			<div class="left-content">啊u可恶的该卡英伟达拒绝吗v啊的语文课带u本来打败吴大维iu噶我饭卡舞法舞i巴克我不打被苏联给覆盖</div>
+		</div>
+		<div class="info-right">
+			<div class="mem-title">成员列表</div>
+			<div class="mem-list">张志铮</div>
+			<div class="mem-list">吴盛</div>
+			<div class="mem-list">淡唯</div>
+			<div class="mem-list">何滨</div>
+			<div class="mem-list">周景武</div>
+			<div class="mem-list">胡昱松</div>
+			<div class="mem-list">许泽松</div>
+		</div>
+	</div>
+	<div class="wrapper">
+		<table class="table">
+			<tr>
+				<th>用户名</th>
+				<th>积分</th>
+			</tr>
+			<div th:each="user:${users}" th:remove="tag">
+				<tr>
+					<td><a href="javascript:;" th:onclick="|showOther('${user.username}');|"
+						th:text="${user.username}"> </a></td>
+					<td th:text="${user.credit}"></td>
+				</tr>
+			</div>
+		</table>
+	</div>
+	<div th:each="user:${users}" th:remove="tag">
+		<form th:id="${user.username}" th:action="@{/user/show/{username}(username=${user.username})}"
+			method="post"></form>
+	</div>
+	<!-- 文件下载 -->
+	<!-- <form id="_download" method="post">
+		<input id="_filename" type="text" name="filename"> <input type="submit" value="下载"
+			onclick="download();">
+	</form> -->
+	
+	
+	
+	
+
+<script src="/js/banner-slide.js"></script>
+</body>
 </html>

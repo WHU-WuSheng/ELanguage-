@@ -61,4 +61,12 @@ public class CapabilityServiceImpl implements ICapabilityService {
 		this.iCapabilityMapper.deleteAllCapability(username);
 	}
 
+	@Override
+	public Capability selectCapabilityByUsernameAndLanguage(String username, String language) throws Exception {
+		// TODO Auto-generated method stub
+		return iCapabilityMapper.selectCapabilityByUsernameAndLanguage(username, language);
+	}
+
+
+
 }
