@@ -29,7 +29,7 @@ public class RecordController {
 	@Autowired
 	private IRecordService iRecordService;
 	@Autowired
-	private IUserService iUserService;// 重定向没成功，有待改进
+	private IUserService iUserService;
 
 	@RequestMapping(value = "applyRecord", method = RequestMethod.POST)
 	public String applyRecord(Record record, String money, ModelMap modelMap, HttpServletRequest request)

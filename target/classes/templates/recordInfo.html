@@ -5,62 +5,82 @@
 <title>Insert title here</title>
 <script type="text/javascript" src="/js/jquery-3.3.1.min.js"></script>
 <script type="text/javascript" src="/js/record.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
 </head>
 <style>
-	
+		.bg{width:100%;height:100vh;position:fixed;z-index:-2}.bg-img{width:100%;height:100%;background:url("../../../../img/login/bg.jpg") no-repeat center center;-webkit-background-size:cover;background-size:cover} 
+		.btn{
+			width: 200px !important;
+			display:inline !important;
+			background-color: rgba(255,255,255,0.3) !important;
+		}
+		.form-control{
+		width: 150px !important;
+		display:inline !important;
+		background-color: rgba(255,255,255,0.3) !important;
+		
+		}
+		*{
+			color:#666 !improtant;
+			font-family: PingFangSC-Medium;
+			
+		}
+		.line{
+			text-align:center;
+			margin:20px auto;
+		}
 </style>
 <body>
-
+<div class="bg">
+<div class="bg-img">
+</div>
+</div>
 	<div th:replace="head::head"></div>
 	
-	老师：
-	<text id="teacher" th:text="${record.teacher}"/>
-	<br> 学生：
-	<text id="student" th:text="${record.student}"/>
-	<br> 语言：
-	<text id="language" th:text="${record.language}" />
-	<br> 申请时间：
-	<text id="applyTime" th:text="${record.applyTime}"/>
-	<br> 开始时间：
-	<text id="startTime" th:text="${record.startTime}" />
-	<br> 结束时间：
-	<text id="endTime" th:text="${record.endTime}" />
-	<br> 价格：
-	<text id="money" th:text="${record.money}" />
-	<br>
+	<div class="line"><span>老师&nbsp;&nbsp;&nbsp;</span><span id="teacher" th:text="${record.teacher}"></span></div>
+	<div class="line"><span>学生&nbsp;&nbsp;&nbsp;</span><span id="student" th:text="${record.student}"></span></div>
+	<div class="line"><span>语言&nbsp;&nbsp;&nbsp;</span><span id="language" th:text="${record.language}" ></span></div>
+	<div class="line"><span>申请时间&nbsp;&nbsp;&nbsp;</span><span id="applyTime" th:text="${record.applyTime}"></span></div>
+	<div class="line"><span>开始时间&nbsp;&nbsp;&nbsp;</span><span id="startTime" th:text="${record.startTime}" ></span></div>
+	<div class="line"><span>结束时间&nbsp;&nbsp;&nbsp;</span><span id="endTime" th:text="${record.endTime}" ></span></div>
+	<div class="line"><span>价格&nbsp;&nbsp;&nbsp;</span><span id="money" th:text="${record.money}" ></span></div>
 
-
+<div class="line">
 	<div th:if="${record.state==0 && session.user.username==record.teacher}">
 		<select id="state">
 				<option value="1">同意</option>
 				<option value="4">拒绝</option>
 		</select>
-		<input id="solve" type="button" value="处理">
+		<input id="solve" type="button" value="处理" class="form-control">
 	</div>
 	
 	<div th:if="${record.state==0 && session.user.username==record.student}">
-		<input id="cancel0" type="button" value="取消订单" > 
+		<input id="cancel0" type="button" value="取消订单"  class="form-control"> 
 	</div>
 	
 	<div th:if="${record.state==1 && session.user.username==record.student}">
-		<input id="cancel1" type="button" value="取消教学（会收取百分之10违约金）" > 
+		<input id="cancel1" type="button" value="取消教学（会收取百分之10违约金）" class="form-control"> 
 	</div>
 	
+</div>
 	
 	<div th:if="${(record.state!=0 && record.state!=1 ) && session.user.username==record.student}">
-		
+<div class="line">		
 		<form enctype="multipart/form-data" action="/record/refundApply" method="post">
-		<div><span>请输入你的退款理由</span><span><input type="text" name="reason"></span></div>
-		<div><span>退款材料</span><input type="file" name="file"></div>
+		<div class="line">请输入你的退款理由&nbsp;&nbsp;<input type="text" name="reason" class="form-control"></div>
+		<div class="line">退款材料&nbsp;&nbsp;<input type="file" name="file" class="btn btn-default btn-sm"></div>
 		<div>
 			<input th:value="${record.teacher}" name="teacher" hidden="true">
 			<input th:value="${record.student}" name="student" hidden="true">
 			<input th:value="${record.applyTime}" name="applyTime" hidden="true">
 		</div>
-		<input type="submit" value="申请退款" >
+		<input type="submit" value="申请退款"  class="btn btn-default btn-sm">
 		 </form>
 	</div>
-	
+</div>
+<div class="line">
 	<div th:if="${record.state==3}">
 		<div th:if="${record.remark!=null}">
 			评价：
@@ -71,15 +91,15 @@
 		</div>
 		<div th:if="${record.remark==null}">
 			暂无评价：<br> <input type="text" id="remarkContent"
-				placeholder="请输入你对课的评价"> 请给此课打*：<select id="star">
+				placeholder="请输入你对课的评价" class="form-control"> 请给此课打*：<select id="star">
 				<option>1</option>
 				<option>2</option>
 				<option>3</option>
 				<option>4</option>
-			</select> <br> <input id="remark" type="button" value="提交评价"><br>
+			</select> <br> <input id="remark" type="button" value="提交评价" class="form-control"><br>
 		</div>
 	</div>
 	
-
+</div>
 </body>
 </html>

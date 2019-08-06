@@ -26,6 +26,70 @@
 	}
 	.bg{width:100%;height:100vh;position:fixed;z-index:-2}.bg-img{width:100%;height:100%;background:url("../../img/login/bg.jpg") no-repeat center center;-webkit-background-size:cover;background-size:cover} 
 	
+	
+	
+	
+	
+	
+	.container{
+		width:1000px;
+		height:100px;
+		
+		margin:0 auto;
+		
+		overflow:hidden;
+	}
+	
+	.container:hover{
+		background-color:rgba(200,200,200,0.2);
+	}
+	
+	.image{
+		width:100px;
+		height:100px;
+		display:block;
+		float:left;
+		margin-right:30px;
+		
+		border:0px solid;
+		border-radius:10px;
+		overflow:hidden;
+		}
+	
+	
+	.image img{
+		width:100px;
+		height:100px;
+	}
+	
+	
+	.info{
+		width:800px;
+		height:100px;
+		display:block;
+		
+		float:left;
+	}
+	
+	
+	.infoUsername{
+		font-size:20px;
+		font-weight:normal;
+		margin-bottom:5px;
+	}
+	
+	
+	.infoOther{
+		color:gray;
+		font-size:12px;
+		margin-bottom:10px;
+	}
+	
+	
+	.infoProfile{
+		color:gray;
+		font-size:15px;
+	}
 </style>
 <title>Insert title here</title>
 </head>
@@ -38,28 +102,31 @@
 	<div th:switch="${userList==null}">
 		<div th:case="true">无查询结果</div>
 		<div th:case="false">
-			<div >
-			<table id="table" class="table ">
-				<thead>
-					<tr>
-						<th>pic</th>
-						<th>name</th>
-						<th>profile</th>
-						<th>sex</th>
-						<th>age</th>
-					</tr>
-				</thead>
-				<tr th:each="user:${userList}">
-					<div th:if="${user.username!=session.user.username}">
-					<th> <img th:src="@{../../img/pic/{username}.png(username=${user.username})}"> </th>
-					<th><a id="a" th:href="@{/user/show/{username}(username=${user.username})}">[[${user.username}]]</a></th>
-					<th>[[${user.profile}]]</th>
-					<th>[[${user.sex}]]</th>
-					<th>[[${user.age}]]</th>
+			<div th:each="user:${userList}">
+				<div th:if="${user.username!=session.user.username}">
+					<div class="container">
+						<div class="image">
+							<img th:src="@{../../img/pic/{username}.png(username=${user.username})}"/>
+						</div>
+								
+								
+						<div class="info">
+							<div class="infoUsername">
+								<a th:href="@{/user/show/{username}(username=${user.username})}">[[${user.username}]]</a>
+							</div>
+											
+							<div class="infoOther">
+								性别:[[${user.sex}]]   年龄:[[${user.age}]]
+							</div>
+											
+							<div class="infoProfile">
+								[[${user.profile}]]
+							</div>
+						</div>
+									
 					</div>
-				</tr>
-				
-			</table>	
+					
+				</div>
 			</div>
 		</div>
 	</div>

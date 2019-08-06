@@ -42,8 +42,10 @@ input[type="button"] {
 <div>
 	<form action="">
 		<div class="text" id="select">			<span class="text">请选择你需要的课程</span>
-			<select th:each="capability:${capabilities}" id="language">
-					<option>[[${capability.language}]]</option>
+			<select  id="language">
+					<div th:each="capability:${capabilities}">
+						<option>[[${capability.language}]]</option>
+					</div>
 				</select> <br>
 		</div>
 

@@ -64,7 +64,7 @@ public class UserController {
 		
 		for(Record record: recordList) {
 			int bufstate=record.getState();
-			if(record.getStartTime().getTime()>=new Timestamp(System.currentTimeMillis()).getTime())
+			if(record.getStartTime().getTime()<=new Timestamp(System.currentTimeMillis()).getTime())
 			{
 				record.setState(2);
 				if(record.getEndTime().getTime()<new Timestamp(System.currentTimeMillis()).getTime())

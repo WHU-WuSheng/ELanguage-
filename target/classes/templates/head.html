@@ -10,7 +10,7 @@
 <script src="/js/header.js"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-<script type="text/javascript">
+<script type="text/javascript"  th:inline="javascript">
 	
 	
 	function show() {
@@ -55,7 +55,7 @@
 		/* $div. */
 	}
 	function acceptCalling(me,other){
-		window.open ( 'http://192.168.123.70:5080/VideoPro/info/VideoPro.html#a='+me+"&b="+other); 
+		window.open ( 'http://192.168.1.100:5080/VideoPro/info/VideoPro.html#a='+me+"&b="+other); 
 	}
 	
 	
@@ -67,7 +67,7 @@
 		})); 
 		
 		
-		window.open ('http://192.168.123.70:5080/VideoPro/info/VideoPro.html#a='+[[${session.user?.username}]]+"&b="+$('.title').html()); 
+		window.open ('http://192.168.1.100:5080/VideoPro/info/VideoPro.html#a='+[[${session.user?.username}]]+"&b="+$('.title').html()); 
 		$('.mask').css({
 			display:'none'
 		})
@@ -85,49 +85,55 @@
 		}) 
 	}
 	
-	var webSocket;
-	 if([[${session.user!=null}]]){
-		 webSocket = new WebSocket('ws://192.168.123.140:80/chat/'+[[${session.user?.username}]]);
-		 /**
-			 * 当服务端打开连接
-			 */
-			webSocket.onopen = function(event) {
-				console.log('WebSocket打开连接');
-			};
-			/**
-			 * 关闭连接
-			 */
-			webSocket.onclose = function(event) {
-				console.log('WebSocket关闭连接');
-			};
-			/**
-			 * 通信失败
-			 */
-			webSocket.onerror = function(event) {
-				console.log('WebSocket发生异常');
-			};
-			
-			webSocket.onmessage = function(event) {
-				console.log("getinfo");
-				getNewCount();
-				//获取服务端消息
-				var chat = JSON.parse(event.data) || {};
-				var str;
-				if(chat.receiver==[[${session.user?.username}]]){
-					if(chat.content=='makeCalling...'){
-						getCalling(chat.sender);
-					}else if(chat.content=='rejectCalling...'){
-						rejectCalling(chat.sender);
-					}else if(chat.content=="acceptCalling..."){
-						acceptCalling(chat.receiver,chat.sender);
+	
+	
+	
+	
+		var webSocket;
+		 if([[${session.user!=null}]]){
+			 
+			 webSocket = new WebSocket('ws://192.168.1.106:80/chat/'+[[${session.user?.username}]]);
+			 /**
+				 * 当服务端打开连接
+				 */
+				webSocket.onopen = function(event) {
+					console.log('WebSocket打开连接');
+				};
+				/**
+				 * 关闭连接
+				 */
+				webSocket.onclose = function(event) {
+					console.log('WebSocket关闭连接');
+				};
+				/**
+				 * 通信失败
+				 */
+				webSocket.onerror = function(event) {
+					console.log('WebSocket发生异常');
+				};
+				
+				webSocket.onmessage = function(event) {
+					console.log("getinfo");
+					getNewCount();
+					//获取服务端消息
+					var chat = JSON.parse(event.data) || {};
+					var str;
+					if(chat.receiver==[[${session.user?.username}]]){
+						if(chat.content=='makeCalling...'){
+							getCalling(chat.sender);
+						}else if(chat.content=='rejectCalling...'){
+							rejectCalling(chat.sender);
+						}else if(chat.content=="acceptCalling..."){
+							acceptCalling(chat.receiver,chat.sender);
+						}
+						
+						
 					}
-					
 					
 				}
 				
-			}
-			
-	 }
+	}
+	
 	
 
 </script>
@@ -176,7 +182,7 @@
 							method="post"></form>
 						<form id="logout" action="/user/logout" method="post"></form>
 						<span><a href="javascript:;" onclick="show();"
-							th:text="|${session.user?.username }|"> </a></span> <span></span> <span><a href="javascript:;"
+							th:text="|${session.user?.username }|"  id="chatUser"> </a></span> <span></span> <span><a href="javascript:;"
 							onclick="logout();">退出</a></span>
 						<span id="info">
 							<span><a href="/chat/show">新消息 </a></span>

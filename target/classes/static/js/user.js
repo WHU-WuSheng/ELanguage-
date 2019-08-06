@@ -1,10 +1,13 @@
 $(function(){
 	$("#learnApply").click(function(){
+		$("#applyStyle").show();
 		var str="/capability/show/"+$("#userInfo").children(":first").children(":first").children(":last").text()+"?type=1";
 	
 		$.ajax({
 			url:str,
 			success:function(html){
+				$("#applyResult").empty(); 
+				$("#applyStyle").empty();
 				$("#applyStyle").append(html);
 			}
 		})
@@ -12,6 +15,7 @@ $(function(){
 	
 	
 	$("#applyConfirm").click(function(){
+		$("#applyStyle").show();
 		$("#applyResult").html("");
 		$.ajax({
 			type: 'POST',
@@ -22,8 +26,9 @@ $(function(){
 				money:$("#money").val()},
 			url: "/record/applyRecord",
 			success:function(html){
+				$("#applyResult").empty(); 
 				$("#applyResult").append(html); 
-				$("#applyStyle").hide();
+				$("#applyStyle").empty();
 				//var newWin = window.open('', '_blank');
 				//newWin.document.write(result);
 			}
@@ -62,7 +67,7 @@ $(function(){
 			},
 			url: "/user/modifyRecharge",
 			success:function(){
-				window.location.reload();
+				window.location.reload(); 
 			}
 		})
 	});

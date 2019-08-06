@@ -7,13 +7,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-/**
- * <p>Title: Record</p>
- * <p>Description: </p>
- * <p>Company: com.zzz</p>
- * @author 张志铮
- * @date 2019年4月2日 下午10:50:13
- */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

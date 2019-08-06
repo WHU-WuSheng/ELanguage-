@@ -10,13 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
-/**
- * <p>Title: Chat</p>
- * <p>Description: </p>
- * <p>Company: com.zzz</p>
- * @author 张志铮
- * @date 2019年4月2日 下午10:50:23
- */
+
 @Data
 @NoArgsConstructor
 @RequiredArgsConstructor
